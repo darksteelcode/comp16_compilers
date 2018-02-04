@@ -1,4 +1,4 @@
-#Cleans up text assembley for tokenization
+#Cleans up text assembley for macro handling and tokenization
 class Clean:
     def __init__(self, asm):
         self.asm = asm;

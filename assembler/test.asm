@@ -1,28 +1,18 @@
-inf-mac {
-	mov A B;
-	put CR 123;
+//Some Test code that doesn't do anything
+/*Just for testing Assembler
+NEW LINE COMMENT!!!*/
+mov A B;
+
+label code;
+	in CX 0x12;
+	mov CX A;
+	put B 0x10;
+	op OP_+;
+	mov RES CND;
+	jumpc code;
+
+if (A*2) {
+		out EX 12;
 };
-/*Comment*/
-inf-loop {
-	mov CR B;
-};
 
-#macro inf-loop {%code};
-	//Infinite loop
-  label %MACROID;
-  %code
-  jump %MACROID;
-#end
-
-#macro inf-mac {%cde};
-	inf-loop {%cde};
-#end
-
-#macro if %reg {%code};
-  mov %reg A;
-  op OP_!;
-  mov RES COND;
-  jumpc %MACROID;
-  %code
-  label %MACROID;
-#end
+out (2+3*(BX + code)) 0x45;
