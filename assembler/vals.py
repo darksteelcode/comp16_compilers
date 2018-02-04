@@ -15,6 +15,13 @@ def getType(val):
     return TYPE_MEM
 
 def valToNum(val):
+    if val[0] == "'" and val[-1] == "'":
+        specials = ["\\", "\\'", "\\\"", "\\a", "\\b", "\\f", "\\n", "\\r", "\\t", "\\v"]
+        vals = [47, 39, 34, 7, 8, 12, 10, 13, 9, 11]
+        if not val[1:-1] in specials:
+            return ord(val[1:-1])
+        else:
+            return vals[specials.index(val[1:-1])]
     radix = 10
     if val[0:2] == '0x':
         radix = 16
