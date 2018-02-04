@@ -37,5 +37,5 @@ def getFiles():
     		outPath = i[1]
     outFile = open(outPath, 'w')
     print "Assembling " + path + " to " + outPath
-    print "--------------------\n"
+    print "--------------------"
     return asmFile, outFile;

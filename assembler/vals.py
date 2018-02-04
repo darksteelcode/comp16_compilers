@@ -14,6 +14,17 @@ def getType(val):
         return TYPE_VAL
     return TYPE_MEM
 
+def typeToName(n):
+    if n == 0:
+        return "register"
+    if n == 1:
+        return "memory address"
+    if n == 2:
+        return "number"
+    if n == 3:
+        return "code"
+    return "undefined"
+
 def valToNum(val):
     if val[0] == "'" and val[-1] == "'":
         specials = ["\\", "\\'", "\\\"", "\\a", "\\b", "\\f", "\\n", "\\r", "\\t", "\\v"]
