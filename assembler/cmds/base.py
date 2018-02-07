@@ -2,6 +2,7 @@ import vals
 from util import *
 
 #cmd is of Cmd class, out is file to write to
+#base is a generic class tailored to be parent for basic asm commands
 class base:
     def __init__(self, cmd, out):
         self.cmd = cmd
@@ -14,7 +15,7 @@ class base:
         self.checkVars()
 
     def initVars(self):
-        #lens in array of len of each argument
+        #lens in array of len of each argument that will be written in bits - does not include opcode
         self.lens = []
         #types is array of types for each args
         self.types = []
@@ -41,4 +42,8 @@ class base:
 
     def emit(self):
         #This is where self.out would be written to
+        lenI = 0
+        for i in self.cmd.args
+            print i
+            lenI += 1
         pass

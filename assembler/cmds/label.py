@@ -10,4 +10,5 @@ class label(base.base):
         return [[self.cmd.args[0], 0]]
 
     def emit(self):
-        print "label emiting"
+        #Label doesn't write anything
+        pass

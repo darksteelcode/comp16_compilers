@@ -62,8 +62,13 @@ class Compiler:
                 if m[0] == val:
                     return m[1]
             error("Memory address " + val + " is not defined", val)
-        error("Name " + val + " is not defined", val)
+        error("Name " + val + " is not defined as a value", val)
+
+    def emit(self):
+        for c in self.cmds:
+            c.emit()
 
     def run(self):
         self.initCmds()
         self.resolveMem()
+        self.emit()
