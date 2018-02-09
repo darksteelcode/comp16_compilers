@@ -49,7 +49,6 @@ class Compiler:
             for m in memDefs:
                 self.mems.append([m[0], memAddr + m[1]])
             memAddr += c.LENGTH
-        print self.mems
 
     def getValue(self, val):
         val_type = vals.getType(val)
