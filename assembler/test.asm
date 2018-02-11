@@ -15,3 +15,5 @@ lod CND real_end;
 str CND end;
 
 label real_end;
+psh A;
+pop CND;

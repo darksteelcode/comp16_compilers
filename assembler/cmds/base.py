@@ -69,5 +69,4 @@ class base:
         if len(self.vals) == len(self.lens):
             out = intsToCmd(self.vals, self.lens)
             self.out.write(out)
-            self.out.flush()
         pass
