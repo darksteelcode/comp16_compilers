@@ -7,3 +7,4 @@ class mov(base.base):
         self.lens = [4, 4, 4, 4]
         self.vals = [1]
         self.LENGTH = 1
+        self.opts = 1

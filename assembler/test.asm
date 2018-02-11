@@ -2,4 +2,4 @@
 /*Just for testing Assembler
 NEW LINE COMMENT!!!*/
 
-mov FX B 5;
+mov FX B;

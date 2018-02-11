@@ -5,6 +5,8 @@ from util import *
 #base is a generic class tailored to be parent for basic asm commands
 class base:
     def __init__(self, cmd, out):
+        #Number of optional argumentrs at the end of the cmd
+        self.opts = 0
         self.cmd = cmd
         self.out = out
         #Compiler
@@ -26,10 +28,18 @@ class base:
         self.types = []
         #length of cmd in number of commands (1 for a signle asm command)
         self.LENGTH = 0
+        #Number of optional arguments at the end of the command
+        self.opts = 0
 
     def checkVars(self):
-        if (len(self.lens) - len(self.vals)) != len(self.cmd.args):
-            error(self.cmd.cmd + " passed " + str(len(self.cmd.args)) + " arguments, but it requires " + str(len(self.lens)), self.cmd.toAsm())
+        missing = (len(self.lens) - len(self.vals)) - len(self.cmd.args)
+        if missing != 0:
+            if missing <= self.opts and missing >= 0:
+                for i in range(missing):
+                    self.cmd.args.append("0")
+                    self.cmd.types.append(vals.TYPE_VAL)
+            else:
+                error(self.cmd.cmd + " passed " + str(len(self.cmd.args)) + " arguments, but it requires " + str(len(self.lens)-len(self.vals)), self.cmd.toAsm())
         argI = 0
         for t in self.types:
             if t != self.cmd.types[argI]:
