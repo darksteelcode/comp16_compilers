@@ -1,6 +1,6 @@
 //Some Test code that doesn't do anything
 /*Just for testing Assembler
-NEW LINE COMMENT!!!*/
+*/
 
 nop 0xabc;
 mov FX B;
@@ -11,3 +11,7 @@ jpc MDR end;
 label end;
 pra RES 0xaa;
 prb CND 0xfa'h;
+lod CND real_end;
+str CND end;
+
+label real_end;

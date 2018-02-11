@@ -7,7 +7,6 @@ class prb(base.base):
         self.lens = [4, 4, 8]
         self.vals = [5]
         self.LENGTH = 1
-        self.opts = 0
 
     def handleSpecialVals(self):
         self.vals[2] = self.vals[2] >> 8
