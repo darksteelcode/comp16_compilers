@@ -2,4 +2,12 @@
 /*Just for testing Assembler
 NEW LINE COMMENT!!!*/
 
+nop 0xabc;
 mov FX B;
+label start;
+jmp A start;
+jpc MDR end;
+. 0;
+label end;
+pra RES 0xaa;
+prb CND 0xfa00;

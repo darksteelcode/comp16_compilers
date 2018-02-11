@@ -59,9 +59,13 @@ class base:
         for i in self.cmd.args:
             self.vals.append(self.com.getValue(i))
 
+    def handleSpecialVals(self):
+        pass
+
     def emit(self):
         #This is where self.out would be written to
         self.convToValues()
+        self.handleSpecialVals()
         if len(self.vals) == len(self.lens):
             out = intsToCmd(self.vals, self.lens)
             self.out.write(out)
