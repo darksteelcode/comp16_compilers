@@ -20,3 +20,5 @@ pop CND;
 srt BX real_end;
 ret;
 ret 12;
+out MDR 1;
+in MAR 0xa;
