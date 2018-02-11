@@ -1,5 +1,6 @@
 import base
 import vals
+
 class label(base.base):
     def initVars(self):
         self.lens = [16]

@@ -11,19 +11,24 @@ class base:
         self.com = None
         #Default
         self.LENGTH = 1
+        self.vals = []
+        self.lens = []
+        self.types = []
         self.initVars()
         self.checkVars()
 
     def initVars(self):
-        #lens in array of len of each argument that will be written in bits - does not include opcode
+        #self.vals is array of int vals to emit - should be init'ed to include opcode
+        self.vals = []
+        #lens in array of len of each argument that will be written in bits - includes opcode
         self.lens = []
-        #types is array of types for each args
+        #types is array of types for each args - does't include opcode
         self.types = []
         #length of cmd in number of commands (1 for a signle asm command)
         self.LENGTH = 0
 
     def checkVars(self):
-        if len(self.lens) != len(self.cmd.args):
+        if (len(self.lens) - len(self.vals)) != len(self.cmd.args):
             error(self.cmd.cmd + " passed " + str(len(self.cmd.args)) + " arguments, but it requires " + str(len(self.lens)), self.cmd.toAsm())
         argI = 0
         for t in self.types:
@@ -41,7 +46,6 @@ class base:
         return []
 
     def convToValues(self):
-        self.vals = []
         for i in self.cmd.args:
             self.vals.append(self.com.getValue(i))
 
