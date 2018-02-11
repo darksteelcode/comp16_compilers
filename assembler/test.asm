@@ -2,7 +2,7 @@
 /*Just for testing Assembler
 NEW LINE COMMENT!!!*/
 
-label code;
+label start;
 . 'A';
 . 'B';
 . 'C';
@@ -11,5 +11,5 @@ label end;
 out_addr start;
 out_addr end;
 label real_end;
-. 0xffff;
+. 0xf0f0;
 out_addr real_end;

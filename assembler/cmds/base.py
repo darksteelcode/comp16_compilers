@@ -40,10 +40,16 @@ class base:
         #[["start", 0], ["end", 3]]
         return []
 
+    def convToValues(self):
+        self.vals = []
+        for i in self.cmd.args:
+            self.vals.append(self.com.getValue(i))
+
     def emit(self):
         #This is where self.out would be written to
-        lenI = 0
-        for i in self.cmd.args
-            print i
-            lenI += 1
+        self.convToValues()
+        if len(self.vals) == len(self.lens):
+            out = intsToCmd(self.vals, self.lens)
+            self.out.write(out)
+            self.out.flush()
         pass

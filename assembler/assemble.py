@@ -9,3 +9,5 @@ asm = clean.Clean(asm).clean()
 tokens = token.Tokenizer(asm).getCmds()
 c = compiler.Compiler(tokens, outFile)
 c.run()
+print "Comp16 Assembler Finished Succesfully"
+print str(outFile.tell()) + " bytes written"
