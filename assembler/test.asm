@@ -17,3 +17,6 @@ str CND end;
 label real_end;
 psh A;
 pop CND;
+srt BX real_end;
+ret;
+ret 12;

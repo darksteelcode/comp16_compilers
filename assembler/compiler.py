@@ -11,7 +11,7 @@ cmds is list of Cmd from token.py
 out is output file
 '''
 
-from cmds import base, dot, label, mov, nop, jmp, jpc, pra, prb, lod, Str, psh, pop
+from cmds import base, dot, label, mov, nop, jmp, jpc, pra, prb, lod, Str, psh, pop, srt, ret
 from util import *
 import vals
 
@@ -23,8 +23,8 @@ cmds:
 label data - set mem addrs data equal to current pos
 out_addr data - set instr equal to real addrs of label data
 '''
-CMD_NAMES = [".", "label", "nop", "mov", "jmp", "jpc", "pra", "prb", "lod", "str", "psh", "pop"]
-CMD_CLASSES = [dot.dot, label.label, nop.nop, mov.mov, jmp.jmp, jpc.jpc, pra.pra, prb.prb, lod.lod, Str.Str, psh.psh, pop.pop]
+CMD_NAMES = [".", "label", "nop", "mov", "jmp", "jpc", "pra", "prb", "lod", "str", "psh", "pop", "srt", "ret"]
+CMD_CLASSES = [dot.dot, label.label, nop.nop, mov.mov, jmp.jmp, jpc.jpc, pra.pra, prb.prb, lod.lod, Str.Str, psh.psh, pop.pop, srt.srt, ret.ret]
 
 class Compiler:
     def __init__(self, cmds, out):
