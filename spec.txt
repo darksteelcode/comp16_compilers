@@ -21,8 +21,8 @@ Asm (Assembly) Listings (a_reg = adrs reg, p_reg = stack pointer reg)
   POP - pop value off stack at p_reg, and put in reg
 a: srt | 4:op 4:a_reg 8:adrs
   SubRouTine - put adrs in lower half of a_reg, push PC on the stack, and put adrs in PC
-b: ret | 4:op 12:null
-  RETurn - pop value off stack into PC
+b: ret | 4:op 12:num
+  RETurn - pop value off stack into PC, add num to PC
 c: out | 4:op 4:reg 8:port
   OUTput - set port equal to reg
 d: in  | 4:op 4:reg 8:port
