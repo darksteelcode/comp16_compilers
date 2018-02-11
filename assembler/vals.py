@@ -1,3 +1,11 @@
+'''
+TYPES:
+REGister: A, B, RES, PC, ...
+MEMory address: a label name that is defined by a label cmd as a addr
+TYPE_VALue: A number. Decimal by default, 0x prefix makes hex, 0b prefix makes binary. Ending with a 'h or 'l specifies high or low byte for cmds like prb. 'l does nothing, 'h shifts the number left a byte
+'''
+
+
 TYPE_REG = 0
 TYPE_MEM = 1
 TYPE_VAL = 2
@@ -34,12 +42,18 @@ def valToNum(val):
         else:
             return vals[specials.index(val[1:-1])]
     radix = 10
+    shift = 0
     if val[0:2] == '0x':
         radix = 16
     if val[0:2] == '0b':
         radix = 2
+    if val[-2:] == '\'h' or val[-2:] == '\'l':
+        if val[-2:] == '\'h':
+            shift = 8
+        val = val[:-2]
     try:
         num = int(val, radix)
+        num = num << shift
         return num
     except ValueError:
         return None
