@@ -48,10 +48,36 @@ e:EX:E General Purpose Reg
 f:FX:F General Purpose Reg
 ```
 ### Instruction Set
-Comp16 has 16 different instructions, 2 of which are un-implemented and do nothing. Each instruction fits into one 16-bit value in memory. Each instruction has a 4-bit opcode, followed by 12 bits of instruction arguments. Because one instruction can't contain a 16 bit value and an opcode, some instructions operate on only one byte of a register. For example, the jumping `jmp` instruction takes two arguments, a register, and an 8-bit value. It puts that value into the lower half of the specified register, and moves it to the program counter. As memory addresses are 16-bit, an additional instruction is needed to jump to and address. This is a `prb`, which puts a value into the upper half or a register.
+Comp16 has 16 different instructions, 2 of which are un-implemented and do nothing. Each instruction fits into one 16-bit value in memory. Each instruction has a 4-bit opcode, followed by 12 bits of instruction arguments.
+
+Because one instruction can't contain a 16 bit value and an opcode, some instructions operate on only one byte of a register. For example, the jumping `jmp` instruction takes two arguments, a register, and an 8-bit value. It puts that value into the lower half of the specified register, and moves it to the program counter. As memory addresses are 16-bit, an additional instruction is needed to jump to and address. This is a `prb`, which puts a value into the upper half or a register.
+
 For example:
 To jump to the address 0xf3a1, the following is used. (Note that the register uesed does not have to be the construction register, but it is good practice to use it for this purpose)
 ```
 prb CR 0xf3'h; //Set the CR high byte equal to 0xf3. The 'h just specifies that this is the high byte being operated on.
-jmp CR 0xa1; //Set the CR low byte equal to 0xa1, and move it to the PC, which will cause a jump once this instruction completes 
+jmp CR 0xa1; //Set the CR low byte equal to 0xa1, and move it to the PC, which will cause a jump once this instruction completes
+```
+The instructions are below, in the format `opcode in hex:shorthand-name argument(bit length) ..; name`
+#### 0:nop null(12); No Operation
+nop does nothing, and just continues on to the next instruction. The argument does not matter.
+Example:
+```
+nop; //Does nothing
+nop 0xfff; //Does nothing again - argument does not matter
+```
+### 1:mov src-reg(4) dst-reg(4) alu-op(4); Move register
+mov does two things - copies a register to a different register, and sets the ALU's mathematical operation. dst-reg is the reg to be copied into, src-reg is the reg with the value copied. alu-op is a the operation for the alu to perform (see the ALU section) (the alu op is optional in assembly language, and is set to zero if not specified).
+Example:
+```
+mov RES A OP_<<; //Copy the value in the result register to the A register, and set the alu to do a left shuft
+mov DX CND; //Copy the value in the F general purpose reg to the conditional register, and set the alu to do an addition (alu op 0).
+```
+### 2:jmp reg(4) addrs(8); Jump
+jmp jumps to an adrs. It puts addrs into the lower byte of reg, then copies the value in reg to the program counter. Because `jmp` only affects the lower byte, it is used in conjunction with `prb`.
+Example:
+```
+//jumps to the address 0xf3a1
+prb CR 0xf3'h; //Set the CR high byte equal to 0xf3. The 'h just specifies that this is the high byte being operated on.
+jmp CR 0xa1; //Set the CR low byte equal to 0xa1, and move it to the PC, which will cause a jump once this instruction completes
 ```
