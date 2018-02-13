@@ -8,9 +8,9 @@ Asm (Assembly) Listings (a_reg = adrs reg, p_reg = stack pointer reg)
 3: jpc | 4:op 4:a_reg 8:adrs
   JumP Conditional - put adrs in lower half of a_reg, jump to value in a_reg if Conditional Register
 4: pra | 4:op 4:reg 8:val
-  Put Reg A - put val in lower half of reg
+  Put Reg A(low) - put val in lower half of reg
 5: prb | 4:op 4:reg 8:val
-  Put Reg B - put val in upper half of reg
+  Put Reg B(high) - put val in upper half of reg
 6: lod | 4:op 4:reg 8:adrs
   LOaD - put adrs in lower half of MAR, move value in MDR to reg
 7: str | 4:op 4:reg 8:adrs
