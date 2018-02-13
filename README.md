@@ -58,7 +58,7 @@ To jump to the address 0xf3a1, the following is used. (Note that the register ue
 prb CR 0xf3'h; //Set the CR high byte equal to 0xf3. The 'h just specifies that this is the high byte being operated on.
 jmp CR 0xa1; //Set the CR low byte equal to 0xa1, and move it to the PC, which will cause a jump once this instruction completes
 ```
-The instructions are below, in the format `opcode in hex:shorthand-name argument(bit length) ..; name`
+The instructions are below, in the format `opcode in hex:shorthand-name argument(bit length) ...; name`
 ### 0:nop null(12); No Operation
 nop does nothing, and just continues on to the next instruction. The argument does not matter.
 Example:
@@ -70,7 +70,7 @@ nop 0xfff; //Does nothing again - argument does not matter
 mov does two things - copies a register to a different register, and sets the ALU's mathematical operation. dst-reg is the reg to be copied into, src-reg is the reg with the value copied. alu-op is a the operation for the alu to perform (see the ALU section) (the alu op is optional in assembly language, and is set to zero if not specified).
 Example:
 ```
-mov RES A OP_<<; //Copy the value in the result register to the A register, and set the alu to do a left shuft
+mov RES A OP_<<; //Copy the value in the result register to the A register, and set the alu to do a left shift.
 mov DX CND; //Copy the value in the F general purpose reg to the conditional register, and set the alu to do an addition (alu op 0).
 ```
 ### 2:jmp reg(4) addrs(8); Jump
@@ -79,5 +79,5 @@ Example:
 ```
 //jumps to the address 0xf3a1
 prb CR 0xf3'h; //Set the CR high byte equal to 0xf3. The 'h just specifies that this is the high byte being operated on.
-jmp CR 0xa1; //Set the CR low byte equal to 0xa1, and move it to the PC, which will cause a jump once this instruction completes
+jmp CR 0xa1; //Set the CR low byte equal to 0xa1, and move it to the PC, which will cause a jump once this instruction completes.
 ```
