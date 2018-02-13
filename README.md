@@ -15,9 +15,11 @@ The registers are, in the format `number in hex:shorthand:name - function`
 1:B:B Reg ---------->|in1 Logic      |
 2:RES:Result Reg <---|out Unit (ALU) |
                      |_______________|
-3:PC:Program Counter Reg
-4:MAR:Memory Address Reg
-5:MDR:Memory Data Reg
+3:PC:Program Counter Reg - current location of program in memory (address of next instruction)
+                              ______________________
+4:MAR:Memory Address Reg --->|addr  Memory (16 bit  |
+5:MDR:Memory Data Reg <----->|data  addr, 64k addr) |
+                             |______________________|
 6:CND:Conditional Reg
 7:BP:Base Pointer
 8:SP:Stack Pointer
