@@ -59,7 +59,7 @@ prb CR 0xf3'h; //Set the CR high byte equal to 0xf3. The 'h just specifies that 
 jmp CR 0xa1; //Set the CR low byte equal to 0xa1, and move it to the PC, which will cause a jump once this instruction completes
 ```
 The instructions are below, in the format `opcode in hex:shorthand-name argument(bit length) ..; name`
-#### 0:nop null(12); No Operation
+### 0:nop null(12); No Operation
 nop does nothing, and just continues on to the next instruction. The argument does not matter.
 Example:
 ```
