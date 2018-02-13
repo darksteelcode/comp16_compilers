@@ -20,15 +20,27 @@ The registers are, in the format `number in hex:shorthand:name - function`
 4:MAR:Memory Address Reg --->|addr  MEMORY (16 bit  |
 5:MDR:Memory Data Reg <----->|data  addr, 64k addr) |
                              |______________________|
-6:CND:Conditional Reg - I this reg is a true value, a conditional jump will succeed, if it is false, it will fail
+6:CND:Conditional Reg - I this reg is a true value, a conditional jump will succeed, if it
+is false, it will fail
 
-7:BP:Base Pointer - NOT hard-coded, but used as a pointer to the stack pointer upon entry to a function - a similar to a frame pointer on most architectures
-8:SP:Stack Pointer - Hard-coded in srt and ret instr, and specified as first argument in psh and pop. psh and pop should always use this as the stack pointer, and the assembler doesn't allow changing this behavior
+7:BP:Base Pointer - NOT hard-coded, but used as a pointer to the stack pointer upon entry
+to a function - a similar to a frame pointer on most architectures
+8:SP:Stack Pointer - Hard-coded in srt and ret instr, and specified as first argument in
+psh and pop. psh and pop should always use this as the stack pointer, and the assembler
+doesn't allow changing this behavior
 
-9:CR:Construction Reg - NOT hard-coded. Because a 16 bit value can't fit into one instruction with an opcode, comp16 instructions operate on the high and low bytes of the value. This register can be used to put the high and low bytes into, and then moved to a register that changing one half an instruction earlier than the other half would lead to unwanted behaviors (for example, the Program Counter - changing just one half would cause an unwanted jump). Additional, this register can be used for instructions, such as jmp, jpc, str, lod and srt that change the low byte of a register and then move it, in combination with prb. For example, to jump to address 0xfa34:
+9:CR:Construction Reg - NOT hard-coded. Because a 16 bit value can't fit into one
+instruction with an opcode, comp16 instructions operate on the high and low bytes of the
+value. This register can be used to put the high and low bytes into, and then moved to a
+register that changing one half an instruction earlier than the other half would lead to
+unwanted behaviors (for example, the Program Counter - changing just one half would cause
+an unwanted jump). Additional, this register can be used for instructions, such as jmp,
+jpc, str, lod and srt that change the low byte of a register and then move it, in
+combination with prb. For example, to jump to address 0xfa34:
   prb CR 0xfa'h;
   jmp CR 0x34;
-The construction register's value should not be assumed to stay the same between subroutine calls, jumps, and macros - use a general purpose register for that.
+The construction register's value should not be assumed to stay the same between subroutine
+calls, jumps, and macros - use a general purpose register for that.
 
 a:AX:A General Purpose Reg
 b:BX:B General Purpose Reg
