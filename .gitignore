@@ -1,3 +1,2 @@
 *.pyc
-!assembler/assemble.pyc
 .DS_Store
