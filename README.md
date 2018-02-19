@@ -35,11 +35,11 @@ To install run the following:
 cd ~
 git clone https://github.com/darksteelcode/comp16_compilers.git
 cd comp16_compilers
-python assembler/gen_pyc.py
-chmod +x assembler/assemble.pyc
+python assembler/c16asm.py
+chmod +x assembler/c16asm.py
 sudo ln -sf `pwd`/assembler/assemble.pyc /usr/local/bin/c16asm
 ```
-This will display usage instructions for the assembler, then prompt for a password for `sudo`. It has cloned `comp16_compilers` in your home directory, compiled the assembler to a pyc file, and linked that file to `/usr/local/bin` as c16asm.
+This will display usage instructions for the assembler, then prompt for a password for `sudo`. It has cloned `comp16_compilers` in your home directory, compiled the assembler to a pyc file, and linked a python file run that pyc to `/usr/local/bin` as `c16asm`.
 #### Uninstall
 To uninstall run the following:
 ```
