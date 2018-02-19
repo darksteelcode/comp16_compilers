@@ -2,16 +2,21 @@ import serial, sys, time, math
 import serial.tools.list_ports
 ser = serial.Serial()
 ser.baudrate = 115200
-hexFile = ""
+
+binFile = ""
+
 if len(sys.argv) < 2:
-    hexFile = raw_input("Hexedecimal Text file to open: ")
-else:
-    hexFile = sys.argv[1]
+	print "- Comp16 Prgm Send -\nUsage:\npython transmit.py [options] <bin file>\nOptions:\n-s serial_port  (default: searches for a port with an ftdi device on it)\n-b baudrate     (default: 115200)\n--------------------"
+	exit()
+
+
+
+
 print "Hexedecimal Text File To Transmit: " + hexFile
 num_lines = sum(1 for line in open(hexFile, 'r'))
 f = open(hexFile, 'r')
 
-print "Looking for FTDI Port"
+print "No Port Specified, Looking for FTDI Port"
 foundOne = False
 for p in serial.tools.list_ports.comports():
     if "ft232r" in p[1].lower():
@@ -20,29 +25,15 @@ for p in serial.tools.list_ports.comports():
         ser.port = p[0]
         ser.open()
         if ser.isOpen():
-            print "Waiting For Device Signature"
-            sigStart = time.time()
-            sigCheck = True
-            while ser.inWaiting() < 1:
-                if time.time() - sigStart > 1.0:
-                    print "No Signature Recived, Starting Anyway"
-                    sigCheck = False
-                    break
-            if sigCheck:
-                if ser.read(1) != '*':
-                    print "Signature Recived - Bad Device Signature Found"
-                    if raw_input("Send Anyway (y/n):") == 'n':
-                        exit()
-                else:
-                    print "Signature Recived - Signature Good"
             ser.read(ser.inWaiting())
             print "Opened"
         else:
             print "Port Failed to open"
             exit()
 if not foundOne:
-    print "No Port Found"
+    print "No Port Specified, and no FTDI Port Found"
     exit()
+
 def sendHex(hex):
     confirm = ""
     for d in range(len(hex)):
@@ -64,6 +55,7 @@ def confirmHex(hex_to_confirm):
         errors += 1
         print "\n---------------------\nERROR\nBAD CONFIRMATION RECVIVED\n---------------------\n"
     return good
+
 start = time.time()
 hexData = f.read().replace("\n", "")
 chunkLen = 128
