@@ -46,3 +46,21 @@ c:CX:C General Purpose Reg
 d:DX:D General Purpose Reg
 e:EX:E General Purpose Reg
 f:FX:F General Purpose Reg
+
+ALU Operations
+0 +
+1 -
+2 *
+3 ~
+4 |
+5 &
+6 NOT
+7 AND
+8 >>
+9 <<
+a ==
+b >
+c >=
+d OR
+e ^
+f
