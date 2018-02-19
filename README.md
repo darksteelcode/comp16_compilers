@@ -5,7 +5,8 @@ This is a collection of tools to generate code for my [Comp16 FPGA Microcomputer
 Installation is only for linux and mac. Because this is written in python, it could be run on windows.
 ### Development Installation
 This is the installation that keeps the compilers source for development of the compilers. If you just want to use the compilers, the `Standard Installation` should suffice.
-Run:
+#### Install
+To install run the following:
 ```
 cd ~
 git clone https://github.com/darksteelcode/comp16_compilers.git
@@ -14,6 +15,14 @@ python assembler/gen_pyc.py
 chmod +x assembler/assemble.pyc
 sudo ln -sf `pwd`/assembler/assemble.pyc /usr/local/bin/c16asm
 ```
+This will display usage instructions for the assembler, then prompt for a password for `sudo`. It has cloned `comp16_compilers` in your home directory, compiled the assembler to a pyc file, and linked that file to `/usr/local/bin` as c16asm.
+#### Uninstall
+To uninstall run the following:
+```
+cd ~
+rm -rf comp16_compilers
+sudo rm /usr/local/bin/c16asm
+``` 
 
 ## Assembler
 The assembler is located in `assembler`.
