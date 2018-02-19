@@ -1,10 +1,19 @@
 # Comp16 Compilers
 This is a collection of tools to generate code for my [Comp16 FPGA Microcomputer](https://github.com/darksteelcode/comp16).
 
+## Installation
+### Development Installation
+
 ## Assembler
-The assembler is located in `assembler`. Run `python assemble.py -o [output file (.bin)] [assembley file (.asm)]` to assemble a program.
+The assembler is located in `assembler`.
+
+## Transmit
+The transmiter is located in `transmit`. It contains tools to transmit programs over a uart to comp16. It is still in development, and can only transmit hex files, not comp16 binaries.
 
 ## Comp16 Specification
+
+IMPORTANT - This Specification is being worked on and is not complete.
+
 Comp16 is a 16 bit microprocessor. All registers, memory and IO are operated on as 16 bit values. Because all the different parts of the architecture depend on each other, each section may not make complete sense the first time through.
 ### Registers
 Comp16 has 16 registers, 8 of which have hardwire functions, 2 have fairly fixed roles in software, and 6 of which are general purpose. Each register is referenced by a 4-bit number.
