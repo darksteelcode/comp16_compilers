@@ -11,28 +11,7 @@ c16asm -o outfile.bin asmfile.asm
 
 ## Installation
 Installation is only for linux and mac. Because these tools are written in python, it could be run on windows. Because the installation compiles a python binary, it may take a few moments, but shouldn't take too long.
-### Standard Installation
-This installs python binaries, but removes the source. If you want the source, se the `Development Installation`.
-#### Install
-To install run the following:
-```
-cd ~
-git clone https://github.com/darksteelcode/comp16_compilers.git
-cd comp16_compilers
-python assembler/c16asm.py
-sudo mv comp16_compilers/assembler/c16asm.py /usr/local/bin/c16asm
-sudo mv comp16_compilers/assembler/assemble.pyc /usr/local/bin/assemble.pyc
-rm -rf comp16_compilers
-```
-This will display usage instructions for the assembler, the prompt for a password for `sudo`. This has cloned `comp16_compiler` in your home directory, moved the assembler to `/usr/local/bin` as c16asm, and removed `comp16_compilers`.
-#### Uninstall
-To uninstall run the following:
-```
-sudo rm /usr/local/bin/c16asm
-```
-### Development Installation
-This is the installation that keeps the compilers source for development of the compilers. If you just want to use the compilers, the `Standard Installation` should suffice.
-#### Install
+### Install
 To install run the following:
 ```
 cd ~
@@ -42,8 +21,8 @@ python assembler/c16asm.py
 chmod +x assembler/c16asm.py
 sudo ln -sf `pwd`/assembler/c16asm.py /usr/local/bin/c16asm
 ```
-This will display usage instructions for the assembler, then prompt for a password for `sudo`. It has cloned `comp16_compilers` in your home directory, compiled the assembler to a pyc file, and linked a python file run that pyc to `/usr/local/bin` as `c16asm`.
-#### Uninstall
+This will display usage instructions for the assembler, then prompt for a password for `sudo`. It has cloned `comp16_compilers` in your home directory, compiled the assembler to a pyc file, and linked a python file to run that pyc to `/usr/local/bin` as `c16asm`.
+### Uninstall
 To uninstall run the following:
 ```
 cd ~
