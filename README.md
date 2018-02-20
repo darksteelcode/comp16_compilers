@@ -24,21 +24,15 @@ To install run the following:
 cd ~
 git clone https://github.com/darksteelcode/comp16_compilers.git
 cd comp16_compilers
-python assembler/c16asm.py
-chmod +x assembler/c16asm.py
-sudo ln -sf `pwd`/assembler/c16asm.py /usr/local/bin/c16asm
-python transmit/c16send.py
-chmod +x transmit/c16send.py
-sudo ln -sf `pwd`/transmit/c16send.py /usr/local/bin/c16send
+make install
 ```
 This will display usage instructions for the assembler, then prompt for a password for `sudo`. It has cloned `comp16_compilers` in your home directory, compiled the assembler to a pyc file, and linked a python file to run that pyc to `/usr/local/bin` as `c16asm`.
 ### Uninstall
 To uninstall run the following:
 ```
-cd ~
-rm -rf comp16_compilers
-sudo rm /usr/local/bin/c16asm
-sudo rm /usr/local/bin/c16send
+cd ~/comp16_compilers
+make uninstall
+cd ..
 ``` 
 
 ## Assembler
