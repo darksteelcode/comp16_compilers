@@ -8,9 +8,16 @@ To use, run:
 ```
 c16asm -o outfile.bin asmfile.asm
 ```
-
+### Transmit
+To use, run:
+```
+sudo c16send -s serial_port binfile.bin
+```
+sudo is required as transmittion uses a serial port.
 ## Installation
 Installation is only for linux and mac. Because these tools are written in python, it could be run on windows. Because the installation compiles a python binary, it may take a few moments, but shouldn't take too long.
+### Dependencies
+python 2.7 and pyserial are required.
 ### Install
 To install run the following:
 ```
@@ -20,6 +27,9 @@ cd comp16_compilers
 python assembler/c16asm.py
 chmod +x assembler/c16asm.py
 sudo ln -sf `pwd`/assembler/c16asm.py /usr/local/bin/c16asm
+python transmit/c16send.py
+chmod +x transmit/c16send.py
+sudo ln -sf `pwd`/transmit/c16send.py /usr/local/bin/c16send
 ```
 This will display usage instructions for the assembler, then prompt for a password for `sudo`. It has cloned `comp16_compilers` in your home directory, compiled the assembler to a pyc file, and linked a python file to run that pyc to `/usr/local/bin` as `c16asm`.
 ### Uninstall
@@ -28,6 +38,7 @@ To uninstall run the following:
 cd ~
 rm -rf comp16_compilers
 sudo rm /usr/local/bin/c16asm
+sudo rm /usr/local/bin/c16send
 ``` 
 
 ## Assembler

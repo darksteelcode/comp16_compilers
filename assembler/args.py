@@ -14,7 +14,7 @@ def getFiles():
     path = args.asm_file
     outPath = 'asm.bin'
     if args.o:
-        outPath = args.o
+        outPath = args.o[0]
     try:
         asmFile = open(path)
     except IOError:
