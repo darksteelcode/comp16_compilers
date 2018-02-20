@@ -13,7 +13,7 @@ To use, run:
 ```
 sudo c16send -s serial_port binfile.bin
 ```
-sudo is required as transmittion uses a serial port.
+sudo is required as transmition uses a serial port.
 ## Installation
 Installation is only for linux and mac. Because these tools are written in python, it could be run on windows. Because the installation compiles a python binary, it may take a few moments, but shouldn't take too long.
 ### Dependencies
