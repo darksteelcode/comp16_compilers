@@ -14,7 +14,7 @@ args = parser.parse_args()
 print "- Comp16 Prgm Send -"
 binFile = args.bin_file
 if args.b:
-    ser.baudrate = int(args.b)
+    ser.baudrate = int(args.b[0])
 if args.s:
     ser.port = args.s[0]
 
