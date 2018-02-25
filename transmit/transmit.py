@@ -6,9 +6,10 @@ ser.baudrate = 115200
 ser.port = "FALSE"
 binFile = ""
 
-parser = argparse.ArgumentParser(usage="\n--------------------\n- Comp16 Prgm Send -\nUsage:\npython transmit.py [options] <bin file>\nOptions:\n-s serial_port  (default: searches for a port with an uart device on it)\n-b baudrate     (default: 115200)\n--------------------")
+parser = argparse.ArgumentParser(usage="\n--------------------\n- Comp16 Prgm Send -\nUsage:\npython transmit.py [options] <bin file>\nOptions:\n-s serial_port  (default: searches for a port with an uart device on it)\n-b baudrate     (default: 115200)\n-c number of bytes per chunk  (default:128)\n--------------------")
 parser.add_argument("-s", nargs=1)
 parser.add_argument("-b", nargs=1)
+parser.add_argument("-c", nargs=1)
 parser.add_argument("bin_file")
 args = parser.parse_args()
 print "- Comp16 Prgm Send -"
@@ -19,8 +20,8 @@ if args.s:
     ser.port = args.s[0]
 
 def print_usage():
-	print "\n--------------------\n- Comp16 Prgm Send -\nUsage:\npython transmit.py [options] <bin file>\nOptions:\n-s serial_port  (default: searches for a port with an uart device on it)\n-b baudrate     (default: 115200)\n--------------------"
-	exit()
+    print "\n--------------------\n- Comp16 Prgm Send -\nUsage:\npython transmit.py [options] <bin file>\nOptions:\n-s serial_port  (default: searches for a port with an uart device on it)\n-b baudrate     (default: 115200)\n-c number of bytes per chunk  (default:128)\n--------------------"
+    exit()
 
 
 
@@ -50,7 +51,7 @@ else:
 def sendBin(bin_data):
     for d in bin_data:
             ser.write(d)
-            time.sleep(0.0001)
+            time.sleep(0.0002)
     return bin_data
 
 def confirmBin(bin_to_confirm):
@@ -68,6 +69,9 @@ def confirmBin(bin_to_confirm):
 start = time.time()
 binData = f.read().replace("\n", "")
 chunkLen = 128
+if args.c:
+    chunkLen = int(args.c[0])
+
 chunks = [binData[i:i+chunkLen] for i in range(0, len(binData), chunkLen)]
 index = 0
 cur = 0
@@ -82,6 +86,7 @@ sys.stdout.write("|\n")
 sys.stdout.flush()
 
 for c in chunks:
+    ser.read(ser.inWaiting())
     conf = sendBin(c)
     confirmBin(conf)
     while int((float(index)/float(num_chunks))*80.0) >= cur:
@@ -89,8 +94,12 @@ for c in chunks:
         sys.stdout.write("#")
         sys.stdout.flush()
     index+=1
+while cur < 80:
+    cur += 1
+    sys.stdout.write("#")
+    sys.stdout.flush()
 
-sendBin("ffff")
+sendBin(chr(255)+chr(255))
 print
 ser.close()
 
