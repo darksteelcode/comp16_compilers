@@ -41,6 +41,32 @@ The assembler is located in `assembler`.
 ## Transmit
 The transmiter is located in `transmit`. It contains tools to transmit programs over a uart to comp16. It is still in development, and can only transmit hex files, not comp16 binaries.
 
+## Assembley Language Syntax
+This section will not talk about general syntax for comp16 assembley, not specific commands.
+### Basics
+Each command contains a command, a space, then a number of arguments, seperated by spaces, and terminated by a semicolon. An argument to a command may include more code in brackets. For example:
+```
+ret;
+lod A B;
+loop A {mov A B;lod mem-1 FX;};
+loop A {
+    mov A B;
+    lod mem-1 FX;
+};
+```
+Whitespace outside of commands is ignored - Therefore, the third and fourth examples are the same. However, whitespace inside of commands does matter - the following is not valid: `mov A B ;`.
+### Comments
+Comp16 uses C-style comments - the following example should illustrate this
+```
+//A Comment
+mov A B; //Another comment
+/* A multi-line commont
+Another Line
+*/
+lod A B;
+```
+
+
 ## Comp16 Specification
 
 IMPORTANT - This Specification is being worked on and is not complete.
