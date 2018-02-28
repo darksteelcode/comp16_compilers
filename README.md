@@ -65,7 +65,8 @@ Another Line
 */
 lod A B;
 ```
-
+### Values
+Comp16 values are by default in decimal, but supports radixes of binary and hexidecimal, specified by `0x` and `0b` prefixes.
 
 ## Comp16 Specification
 
