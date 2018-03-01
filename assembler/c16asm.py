@@ -1,2 +1,2 @@
-#!/c/Python27/python
+#!/usr/bin/python
 import assemble

@@ -24,14 +24,14 @@ To install run the following:
 cd ~
 git clone https://github.com/darksteelcode/comp16_compilers.git
 cd comp16_compilers
-make install
+sudo make install
 ```
 This will display usage instructions for the assembler, then prompt for a password for `sudo`. It has cloned `comp16_compilers` in your home directory, compiled the assembler to a pyc file, and linked a python file to run that pyc to `/usr/local/bin` as `c16asm`.
 ### Uninstall
 To uninstall run the following:
 ```
 cd ~/comp16_compilers
-make uninstall
+sudo make uninstall
 cd ..
 ``` 
 
@@ -66,9 +66,19 @@ Another Line
 lod A B;
 ```
 ### Values
-Comp16 values are by default in decimal, but supports radixes of binary and hexidecimal, specified by `0x` and `0b` prefixes.
-
-## Comp16 Specification
+Comp16 values are by default in decimal, but supports radixes of binary and hexidecimal, specified by `0x` and `0b` prefixes. For example:
+```
+123 //123
+0x5f43 //24387
+0b1010 //10
+```
+Because comp16 is 16-bit, high and low bytes can be spefified with `'h` and `'l` at the end of the number. `'l` does nothing to the number, and is included only for completness. `'h` shifts the number left 8 bits. This is useful for commands, such as `prb`, that take the top byte of a number. For example:
+```
+0xfa   //0x00fa
+0xfa'l //0x00fa
+0xfa'h //0xfa00 
+```
+# Comp16 Specification
 
 IMPORTANT - This Specification is being worked on and is not complete.
 
