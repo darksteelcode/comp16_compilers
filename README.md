@@ -24,14 +24,14 @@ To install run the following:
 cd ~
 git clone https://github.com/darksteelcode/comp16_compilers.git
 cd comp16_compilers
-make install
+sudo make install
 ```
 This will display usage instructions for the assembler, then prompt for a password for `sudo`. It has cloned `comp16_compilers` in your home directory, compiled the assembler to a pyc file, and linked a python file to run that pyc to `/usr/local/bin` as `c16asm`.
 ### Uninstall
 To uninstall run the following:
 ```
 cd ~/comp16_compilers
-make uninstall
+sudo make uninstall
 cd ..
 ``` 
 
@@ -41,7 +41,44 @@ The assembler is located in `assembler`.
 ## Transmit
 The transmiter is located in `transmit`. It contains tools to transmit programs over a uart to comp16. It is still in development, and can only transmit hex files, not comp16 binaries.
 
-## Comp16 Specification
+## Assembley Language Syntax
+This section will not talk about general syntax for comp16 assembley, not specific commands.
+### Basics
+Each command contains a command, a space, then a number of arguments, seperated by spaces, and terminated by a semicolon. An argument to a command may include more code in brackets. For example:
+```
+ret;
+lod A B;
+loop A {mov A B;lod mem-1 FX;};
+loop A {
+    mov A B;
+    lod mem-1 FX;
+};
+```
+Whitespace outside of commands is ignored - Therefore, the third and fourth examples are the same. However, whitespace inside of commands does matter - the following is not valid: `mov A B ;`.
+### Comments
+Comp16 uses C-style comments - the following example should illustrate this
+```
+//A Comment
+mov A B; //Another comment
+/* A multi-line commont
+Another Line
+*/
+lod A B;
+```
+### Values
+Comp16 values are by default in decimal, but supports radixes of binary and hexidecimal, specified by `0x` and `0b` prefixes. For example:
+```
+123 //123
+0x5f43 //24387
+0b1010 //10
+```
+Because comp16 is 16-bit, high and low bytes can be spefified with `'h` and `'l` at the end of the number. `'l` does nothing to the number, and is included only for completness. `'h` shifts the number left 8 bits. This is useful for commands, such as `prb`, that take the top byte of a number. For example:
+```
+0xfa   //0x00fa
+0xfa'l //0x00fa
+0xfa'h //0xfa00 
+```
+# Comp16 Specification
 
 IMPORTANT - This Specification is being worked on and is not complete.
 
