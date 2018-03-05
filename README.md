@@ -1,5 +1,5 @@
 # Comp16 Compilers
-This is a collection of tools to generate code for my [Comp16 FPGA Microcomputer](https://github.com/darksteelcode/comp16).
+This is a collection of tools to generate code for my [Comp16 FPGA Microcomputer](https://github.com/darksteelcode/comp16). Software made with these tools is located in the [Comp16 Software](https://github.com/darksteelcode/comp16_software) respositry.
 
 ## Usage
 Installation instructions are below.
