@@ -144,11 +144,3 @@ class Preprocessor:
         if not path in self.included:
             self.asm = f.read() + self.asm
             self.included.append(path)
-
-
-
-c = Preprocessor(open("CODE_TEST.asm").read())
-c.applyInstr()
-
-print "----------"
-print c.asm
