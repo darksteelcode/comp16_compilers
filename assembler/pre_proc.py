@@ -40,7 +40,6 @@ class Preprocessor:
                 token = self.tokenizeInstr(firstInstr)
                 func = self.runs[self.valid.index(i)]
                 func(token)
-                print token
                 firstInstr = self.findFirstAndRemove(i)
         return self.asm
 
