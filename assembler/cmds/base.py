@@ -16,6 +16,7 @@ class base:
         self.vals = []
         self.lens = []
         self.types = []
+	self.altTypes = []
         self.initVars()
         self.checkVars()
 
@@ -42,7 +43,7 @@ class base:
                 error(self.cmd.cmd + " passed " + str(len(self.cmd.args)) + " arguments, but it requires " + str(len(self.lens)-len(self.vals)), self.cmd.toAsm())
         argI = 0
         for t in self.types:
-            if t != self.cmd.types[argI]:
+            if t != self.cmd.types[argI] and (not self.cmd.types[argI] != vals.TYPE_ANY):
                 error("Argument number " + str(argI) + " to " + self.cmd.cmd + " is " + vals.typeToName(self.cmd.types[argI]) + ", but should be " + vals.typeToName(t), self.cmd.toAsm())
             argI += 1
 

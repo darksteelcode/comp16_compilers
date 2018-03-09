@@ -10,6 +10,7 @@ TYPE_REG = 0
 TYPE_MEM = 1
 TYPE_VAL = 2
 TYPE_CODE = 3
+TYPE_ANY = 4
 
 REGS = ["A", "B", "RES", "PC", "MAR", "MDR", "CND", "BP", "SP", "CR", "AX", "BX", "CX", "DX", "EX", "FX"]
 
