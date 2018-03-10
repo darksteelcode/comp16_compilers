@@ -7,8 +7,8 @@ class Cmd:
         self.cmd = ""
         self.args = []
         self.types = []
-        self.groupStarts = ['{', '(']
-        self.groupEnds = ['}', '(']
+        self.groupStarts = ['{', '(', "'"]
+        self.groupEnds = ['}', '(', "'"]
         self.genArgs()
     #Add function to convert asm
     def genArgs(self):
@@ -17,7 +17,7 @@ class Cmd:
         for i in range(len(self.asm)):
             if self.asm[i] in self.groupStarts:
                 groupDepth += 1
-            if self.asm[i] in self.groupEnds:
+            elif self.asm[i] in self.groupEnds:
                 groupDepth -= 1
                 if groupDepth < 0:
                     error("To many closing symbols", self.asm[startI:i+5])
