@@ -5,6 +5,8 @@ MEMory address: a label name that is defined by a label cmd as a addr
 TYPE_VALue: A number. Decimal by default, 0x prefix makes hex, 0b prefix makes binary. Ending with a 'h or 'l specifies high or low byte for cmds like prb. 'l does nothing, 'h shifts the number left a byte
 '''
 
+CHAR_SPECIALS = ["\\", "\\'", "\\\"", "\\a", "\\b", "\\f", "\\n", "\\r", "\\t", "\\v"]
+CHAR_REPLACES = [47, 39, 34, 7, 8, 12, 10, 13, 9, 11]
 
 TYPE_REG = 0
 TYPE_MEM = 1
@@ -36,8 +38,8 @@ def typeToName(n):
 
 def valToNum(val):
     if val[0] == "'" and val[-1] == "'":
-        specials = ["\\", "\\'", "\\\"", "\\a", "\\b", "\\f", "\\n", "\\r", "\\t", "\\v"]
-        vals = [47, 39, 34, 7, 8, 12, 10, 13, 9, 11]
+        specials = CHAR_SPECIALS
+        vals = CHAR_REPLACES
         if not val[1:-1] in specials:
             return ord(val[1:-1])
         else:

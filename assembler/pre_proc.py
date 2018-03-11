@@ -30,10 +30,10 @@ class Preprocessor:
     def __init__(self, asm):
     	self.asm = asm
     	#valid cmds in order to apply them
-    	self.valid = ["include", "define", "repeat"]
+    	self.valid = ["include", "define", "repeat", "string"]
     	#Already included files - don't include again
     	self.included = []
-    	self.runs =  [self.include, self.define, self.repeat]
+    	self.runs =  [self.include, self.define, self.repeat, self.string]
     	self.instrs = [] #Instrs in string form
     	self.cmds = [] #Tokenized
     	#Valid seperators for command names
@@ -58,7 +58,7 @@ class Preprocessor:
             if endIndex == -1:
                 error("Preprocessor instruction not closed with an \\", self.asm[index:self.asm.find("\n", index+1)])
             instr = self.asm[index:endIndex+1]
-            if instr.split(" ")[0] == "#"+cmd:
+            if instr.split(" ")[0] == "#"+cmd or instr[:instr.find("\n")] == "#"+cmd:
                 self.asm = self.asm[:index] + self.asm[endIndex+1:]
                 return instr, index
             index = self.asm.find("#", index+1)
@@ -122,9 +122,20 @@ class Preprocessor:
 
     def repeat(self, cmd):
         if len(cmd[1]) != 1:
-            error("#repeat takes 1 arguments, not " + str(len(cmd[1])), "#" + cmd[0] + " " + ' '.join(cmd[1]))
+            error("#repeat takes 1 arguments, not " + str(len(cmd[1])) + "-Text to repet goes in body of #repeat", "#" + cmd[0] + " " + ' '.join(cmd[1]))
         try:
             num = vals.valToNum(cmd[1][0])
         except ValueError:
             error("#repeat takes a number as argument 0", "#" + cmd[0] + " " + ' '.join(cmd[1]))
         self.asm = self.asm[:cmd[3]] + cmd[2]*num + self.asm[cmd[3]:]
+
+    def string(self, cmd):
+        if len(cmd[1]) != 0:
+            error("#string takes 0 arguments, not " + str(len(cmd[1])) + "-String should be in body of #string", "#" + cmd[0] + " " + ' '.join(cmd[1]))
+        result = ""
+        cmd[2] = cmd[2][1:]
+        for c in cmd[2]:
+            if not ord(c) in vals.CHAR_REPLACES:
+                result += ". '" + c + "';\n"
+        self.asm = self.asm[:cmd[3]] + result + self.asm[cmd[3]:]
+        
