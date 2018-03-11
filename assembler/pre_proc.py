@@ -1,4 +1,5 @@
 from util import *
+import vals
 #Preprocessor
 #NOTE - include looks in /usr/c16-include for asm files after current dir
 '''
@@ -123,8 +124,7 @@ class Preprocessor:
         if len(cmd[1]) != 1:
             error("#repeat takes 1 arguments, not " + str(len(cmd[1])), "#" + cmd[0] + " " + ' '.join(cmd[1]))
         try:
-            num = int(cmd[1][0])
+            num = vals.valToNum(cmd[1][0])
         except ValueError:
             error("#repeat takes a number as argument 0", "#" + cmd[0] + " " + ' '.join(cmd[1]))
         self.asm = self.asm[:cmd[3]] + cmd[2]*num + self.asm[cmd[3]:]
-        print self.asm
