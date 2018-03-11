@@ -19,15 +19,20 @@ Examples:
 #define A 3
 \
 
+#repeat 126
+mov A B;
+pra B 4;
+\
+
 '''
 class Preprocessor:
     def __init__(self, asm):
     	self.asm = asm
     	#valid cmds in order to apply them
-    	self.valid = ["include", "define"]
+    	self.valid = ["include", "define", "repeat"]
     	#Already included files - don't include again
     	self.included = []
-    	self.runs =  [self.include, self.define]
+    	self.runs =  [self.include, self.define, self.repeat]
     	self.instrs = [] #Instrs in string form
     	self.cmds = [] #Tokenized
     	#Valid seperators for command names
@@ -35,12 +40,12 @@ class Preprocessor:
 
     def applyInstr(self):
         for i in self.valid:
-            firstInstr = self.findFirstAndRemove(i)
+            firstInstr,index = self.findFirstAndRemove(i)
             while firstInstr:
-                token = self.tokenizeInstr(firstInstr)
+                token = self.tokenizeInstr(firstInstr, index)
                 func = self.runs[self.valid.index(i)]
                 func(token)
-                firstInstr = self.findFirstAndRemove(i)
+                firstInstr,index = self.findFirstAndRemove(i)
         return self.asm
 
     def findFirstAndRemove(self, cmd):
@@ -54,11 +59,11 @@ class Preprocessor:
             instr = self.asm[index:endIndex+1]
             if instr.split(" ")[0] == "#"+cmd:
                 self.asm = self.asm[:index] + self.asm[endIndex+1:]
-                return instr
+                return instr, index
             index = self.asm.find("#", index+1)
-        return False
+        return False, False
 
-    def tokenizeInstr(self, i):
+    def tokenizeInstr(self, i, index):
         #Remove # and \
         i = i[1:-1]
         cmdEnd = i.find("\n")
@@ -68,37 +73,7 @@ class Preprocessor:
         else:
             cmdEnd = len(i)
         line1s = i[:cmdEnd].split(' ')
-        return [line1s[0], line1s[1:], body]
-
-    '''
-    #Takes code, gets instructions out, does not process them, and removes them from the asm
-    def getAndRemoveInstr(self):
-        endIndex = 0
-        index = 0
-        index = self.asm.find("#", index)
-        while index != -1:
-            endIndex = self.asm.find('\\', index)
-            if endIndex == -1:
-                error("Preprocessor instruction not closed with an \\", self.asm[index:self.asm.find("\n", index+1)])
-            self.instrs.append(self.asm[index:endIndex+1])
-            self.asm = self.asm[:index] + self.asm[endIndex+1:]
-            index = self.asm.find("#", index+1)
-    '''
-    '''
-    #Convert self.intrs to [[cmd, [args], body], ...]
-    def tokenizeInstr(self):
-        for i in self.instrs:
-            #Remove # and \
-            i = i[1:-1]
-            cmdEnd = i.find("\n")
-            body = ""
-            if cmdEnd != -1:
-                body = i[cmdEnd:]
-            else:
-                cmdEnd = len(i)
-            line1s = i[:cmdEnd].split(' ')
-	    self.cmds.append([line1s[0], line1s[1:], body])
-	'''
+        return [line1s[0], line1s[1:], body, index]
 
     def runInstr(self):
         for i in self.cmds:
@@ -143,3 +118,13 @@ class Preprocessor:
         if not path in self.included:
             self.asm = f.read() + self.asm
             self.included.append(path)
+
+    def repeat(self, cmd):
+        if len(cmd[1]) != 1:
+            error("#repeat takes 1 arguments, not " + str(len(cmd[1])), "#" + cmd[0] + " " + ' '.join(cmd[1]))
+        try:
+            num = int(cmd[1][0])
+        except ValueError:
+            error("#repeat takes a number as argument 0", "#" + cmd[0] + " " + ' '.join(cmd[1]))
+        self.asm = self.asm[:cmd[3]] + cmd[2]*num + self.asm[cmd[3]:]
+        print self.asm
