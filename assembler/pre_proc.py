@@ -117,8 +117,9 @@ class Preprocessor:
                 error("No such file: " + path, "#" + cmd[0] + " " + ' '.join(cmd[1]))
 
         if not path in self.included:
-            self.asm = f.read() + self.asm
+            self.asm = self.asm[:cmd[3]] + f.read() + self.asm[cmd[3]:]
             self.included.append(path)
+        f.close()
 
     def repeat(self, cmd):
         if len(cmd[1]) != 1:
