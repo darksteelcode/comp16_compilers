@@ -30,10 +30,10 @@ class Preprocessor:
     def __init__(self, asm):
     	self.asm = asm
     	#valid cmds in order to apply them
-    	self.valid = ["include", "define", "repeat", "string"]
+    	self.valid = ["include", "define", "repeat", "string", "macro"]
     	#Already included files - don't include again
     	self.included = []
-    	self.runs =  [self.include, self.define, self.repeat, self.string]
+    	self.runs =  [self.include, self.define, self.repeat, self.string, self.macro]
     	self.instrs = [] #Instrs in string form
     	self.cmds = [] #Tokenized
     	#Valid seperators for command names
@@ -139,4 +139,24 @@ class Preprocessor:
             if not ord(c) in vals.CHAR_REPLACES:
                 result += ". '" + c + "';\n"
         self.asm = self.asm[:cmd[3]] + result + self.asm[cmd[3]:]
+
+    def macro(self, cmd):
+        if len(cmd[1]) < 1:
+            error("#macro takes at least one argument - the macro name", "#" + cmd[0] + " " + ' '.join(cmd[1]))
         
+
+'''
+
+//Test macro for argument naming and passing conventions
+#macro test_macro! MEM location CODE exec VAL adder
+    label MACROID0!;
+        exec
+        put CR adder;
+        str CR location;
+        mov CR CND;
+        jumpc MACROID0!;
+    label MACROID1!;
+        jump MACROID1!;
+\
+
+'''

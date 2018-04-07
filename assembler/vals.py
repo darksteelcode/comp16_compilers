@@ -14,6 +14,8 @@ TYPE_VAL = 2
 TYPE_CODE = 3
 TYPE_ANY = 4
 
+TYPE_NAMES = ["REG", "MEM", "VAL", "CODE", "ANY"]
+
 REGS = ["A", "B", "RES", "PC", "MAR", "MDR", "CND", "BP", "SP", "CR", "AX", "BX", "CX", "DX", "EX", "FX"]
 
 def getType(val):
