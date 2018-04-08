@@ -143,7 +143,21 @@ class Preprocessor:
     def macro(self, cmd):
         if len(cmd[1]) < 1:
             error("#macro takes at least one argument - the macro name", "#" + cmd[0] + " " + ' '.join(cmd[1]))
-        
+        name = cmd[1][0]
+        cmd[1] = cmd[1][1:]
+        if len(cmd[1]) % 2 != 0:
+            error("#macro needs a macro name, and each argument needs a type and name", "#" + cmd[0] + " " + ' '.join(cmd[1]))
+        args = []
+        for i in range(len(cmd[1])):
+            if i%2==0:
+                args.append([cmd[1][i], cmd[1][i+1]])
+        #Convert string types to numbers
+        for a in args:
+            try:
+                a[0] = vals.TYPE_NAMES.index(a[0])
+            except ValueError:
+                error("#macro arguments need to have a valid argument type - REG, MEM, CODE, ANY", "#" + cmd[0] + " " + ' '.join(cmd[1]))
+        print args
 
 '''
 
