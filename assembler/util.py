@@ -1,10 +1,10 @@
 def error(err, context):
     print "- Comp16 Assembler - \nError:\n" + str(err) + "\nAt:\n\n" + str(context) + "\n"
-    exit()
+    exit(1)
 
 def nonASMError(err):
     print "- Comp16 Assembler - \nError:\n" + str(err)
-    exit()
+    exit(1)
 
 def intsToCmd(vals, lens):
     #vals is array of ints to make command, lens is length in bits of each
