@@ -13,8 +13,23 @@ class Macro:
     def addVariation(self, vary):
         self.varies.append(vary)
 
+    def getVaryForArg(self, args):
+        for v in self.varies:
+            if len(args) == len(v.args):
+                index = 0
+                for a in args:
+                    if vals.getType(a) != v.args[index][0]:
+                        continue
+                    index+=1
+                return v
+        return False
+
 class MacroVariation:
     def __init__(self, name, args, body):
         self.name = name
         self.args = args
         self.body = body
+
+    #Apply args to body
+    def applyArgs(self, args):
+        pass

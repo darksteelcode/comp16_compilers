@@ -38,7 +38,7 @@ class Preprocessor:
     	self.instrs = [] #Instrs in string form
     	self.cmds = [] #Tokenized
     	#Valid seperators for command names
-    	self.sprts = [' ', ';']
+    	self.sprts = vals.SEPARATORS
     	#All macro variations defined
     	self.macros = []
     	#Processed macros with all variations

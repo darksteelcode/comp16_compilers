@@ -7,7 +7,7 @@ TYPE_VALue: A number. Decimal by default, 0x prefix makes hex, 0b prefix makes b
 
 CHAR_SPECIALS = ["\\", "\\'", "\\\"", "\\a", "\\b", "\\f", "\\n", "\\r", "\\t", "\\v"]
 CHAR_REPLACES = [47, 39, 34, 7, 8, 12, 10, 13, 9, 11]
-
+SEPARATORS = [' ', ';']
 TYPE_REG = 0
 TYPE_MEM = 1
 TYPE_VAL = 2
