@@ -3,26 +3,14 @@ import args, clean
 import token
 import compiler
 import pre_proc
+import macro
 
 def asmToCompilerRdyTokens(asm):
     asm, macros = pre_proc.Preprocessor(asm).applyInstr()
     asm = clean.Clean(asm).clean()
     tokens = token.Tokenizer(asm).getCmds()
-    #tokens with macros applied
-    finalTokens = []
-    #Apply macros here
-    for t in range(len(tokens)):
-        appliedMacro = False
-        for m in macros:
-            if tokens[t].cmd == m.name:
-                body = m.applyArgs(tokens[t].args)
-                replaceTokens = asmToCompilerRdyTokens(body)
-                finalTokens = finalTokens + replaceTokens
-                appliedMacro = True
-                break
-        if not appliedMacro:
-            finalTokens.append(tokens[t])
-    return finalTokens
+    tokens = macro.applyMacrosToTokens(tokens, macros)
+    return tokens
 
 asmFile, outFile = args.getFiles()
 asm = asmFile.read()

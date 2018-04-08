@@ -2,9 +2,27 @@ from util import *
 import vals
 #For macro ids
 import uuid
+import assemble
 '''
 Macro functions - this file contains the macro class, and tools to apply macro commands
 '''
+
+def applyMacrosToTokens(tokens, macros):
+    #tokens with macros applied
+    finalTokens = []
+    #Apply macros here
+    for t in range(len(tokens)):
+        appliedMacro = False
+        for m in macros:
+            if tokens[t].cmd == m.name:
+                body = m.applyArgs(tokens[t].args)
+                replaceTokens = assemble.asmToCompilerRdyTokens(body)
+                finalTokens = finalTokens + replaceTokens
+                appliedMacro = True
+                break
+        if not appliedMacro:
+            finalTokens.append(tokens[t])
+    return finalTokens
 
 class Macro:
     def __init__(self, name):
