@@ -4,21 +4,29 @@ import token
 import compiler
 import pre_proc
 
-def asmToCompilerRdyAsm(asm):
+def asmToCompilerRdyTokens(asm):
     asm, macros = pre_proc.Preprocessor(asm).applyInstr()
     asm = clean.Clean(asm).clean()
-    for m in macros:
-        vary = m.getVaryForArgs(["CR", "{mov A B;ret 0;}"])
-        if vary:
-            print vary
-            print vary.applyArgs(["CR", "{mov A B;ret 0;}"])
+    tokens = token.Tokenizer(asm).getCmds()
+    #tokens with macros applied
+    finalTokens = []
     #Apply macros here
-    return asm
+    for t in range(len(tokens)):
+        appliedMacro = False
+        for m in macros:
+            if tokens[t].cmd == m.name:
+                body = m.applyArgs(tokens[t].args)
+                replaceTokens = asmToCompilerRdyTokens(body)
+                finalTokens = finalTokens + replaceTokens
+                appliedMacro = True
+                break
+        if not appliedMacro:
+            finalTokens.append(tokens[t])
+    return finalTokens
 
 asmFile, outFile = args.getFiles()
 asm = asmFile.read()
-asm = asmToCompilerRdyAsm(asm)
-tokens = token.Tokenizer(asm).getCmds()
+tokens = asmToCompilerRdyTokens(asm)
 c = compiler.Compiler(tokens, outFile)
 c.run()
 print "Comp16 Assembler Finished Succesfully"

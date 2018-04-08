@@ -30,11 +30,11 @@ pra B 4;
 class Preprocessor:
     def __init__(self, asm):
     	self.asm = asm
-    	#valid cmds in order to apply them - MACRO MUST BE LAST (macros are not preproc'd for preproc statments - they must be preproc'd first
-    	self.valid = ["include", "define", "repeat", "string", "macro"]
+    	#valid cmds in order to apply them - MACRO must come after defne and before the rest, else it's body will be preproc'd without arguments
+    	self.valid = ["include", "define", "macro", "repeat", "string"]
     	#Already included files - don't include again
     	self.included = []
-    	self.runs =  [self.include, self.define, self.repeat, self.string, self.macro]
+    	self.runs =  [self.include, self.define, self.macro, self.repeat, self.string]
     	self.instrs = [] #Instrs in string form
     	self.cmds = [] #Tokenized
     	#Valid seperators for command names
@@ -143,7 +143,7 @@ class Preprocessor:
 
     def repeat(self, cmd):
         if len(cmd[1]) != 1:
-            error("#repeat takes 1 arguments, not " + str(len(cmd[1])) + "-Text to repet goes in body of #repeat", "#" + cmd[0] + " " + ' '.join(cmd[1]))
+            error("#repeat takes 1 arguments, not " + str(len(cmd[1])) + "-Text to repeat goes in body of #repeat", "#" + cmd[0] + " " + ' '.join(cmd[1]))
         try:
             num = vals.valToNum(cmd[1][0])
         except ValueError:

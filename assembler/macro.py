@@ -26,6 +26,9 @@ class Macro:
                 return v
         return False
 
+    def applyArgs(self, args):
+        return self.getVaryForArgs(args).applyArgs(args)
+
 class MacroVariation:
     def __init__(self, name, args, body):
         self.name = name
