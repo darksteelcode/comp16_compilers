@@ -158,6 +158,7 @@ class Preprocessor:
         for c in cmd[2]:
             if not ord(c) in vals.CHAR_REPLACES:
                 result += ". '" + c + "';\n"
+        result += ". 0;\n"
         self.asm = self.asm[:cmd[3]] + result + self.asm[cmd[3]:]
 
     def macro(self, cmd):
