@@ -13,7 +13,7 @@ class Macro:
     def addVariation(self, vary):
         self.varies.append(vary)
 
-    def getVaryForArg(self, args):
+    def getVaryForArgs(self, args):
         for v in self.varies:
             if len(args) == len(v.args):
                 index = 0
@@ -37,6 +37,14 @@ class MacroVariation:
         for a in self.args:
             argNames.append(a[1])
         argVals = args
+        argIndex = 0
         for a in argNames:
-            index = 0
-            loc = self.body.find
+            loc = body.find(a)
+            while loc != -1:
+                endIndex = loc + len(a)
+                print body[loc:endIndex]
+                if (loc == 0 or body[loc-1] in vals.SEPARATORS) and (endIndex >= len(body) or body[endIndex] in vals.SEPARATORS):
+                    body = body[:loc] + argVals[argIndex] + body[endIndex:]
+                loc = body.find(a)
+            argIndex += 1
+        return body

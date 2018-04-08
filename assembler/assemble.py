@@ -7,6 +7,11 @@ import pre_proc
 def asmToCompilerRdyAsm(asm):
     asm, macros = pre_proc.Preprocessor(asm).applyInstr()
     asm = clean.Clean(asm).clean()
+    for m in macros:
+        vary = m.getVaryForArgs(["CR", "{mov A B;ret 0;}"])
+        if vary:
+            print vary
+            print vary.applyArgs(["CR", "{mov A B;ret 0;}"])
     #Apply macros here
     return asm
 
