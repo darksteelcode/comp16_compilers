@@ -1,5 +1,6 @@
 from util import *
 import vals
+import macro
 #Preprocessor
 #NOTE - include looks in /usr/c16-include for asm files after current dir
 '''
@@ -29,7 +30,7 @@ pra B 4;
 class Preprocessor:
     def __init__(self, asm):
     	self.asm = asm
-    	#valid cmds in order to apply them
+    	#valid cmds in order to apply them - MACRO MUST BE LAST (macros are not preproc'd for preproc statments - they must be preproc'd first
     	self.valid = ["include", "define", "repeat", "string", "macro"]
     	#Already included files - don't include again
     	self.included = []
@@ -38,6 +39,10 @@ class Preprocessor:
     	self.cmds = [] #Tokenized
     	#Valid seperators for command names
     	self.sprts = [' ', ';']
+    	#All macro variations defined
+    	self.macros = []
+    	#Processed macros with all variations
+    	self.cleanMacros = []
 
     def applyInstr(self):
         for i in self.valid:
@@ -47,7 +52,22 @@ class Preprocessor:
                 func = self.runs[self.valid.index(i)]
                 func(token)
                 firstInstr,index = self.findFirstAndRemove(i)
-        return self.asm
+        self.cleanMacros = self.consolidateMacros()
+        return self.asm, self.cleanMacros
+
+    def consolidateMacros(self):
+        names = []
+        macros = []
+        for m in self.macros:
+            if not m.name in names:
+                macros.append(macro.Macro(m.name))
+                macros[-1].addVariation(m)
+                names.append(m.name)
+            else:
+                for i in macros:
+                    if i.name == m.name:
+                        i.addVariation(m)
+        return macros
 
     def findFirstAndRemove(self, cmd):
         endIndex = 0
@@ -157,11 +177,11 @@ class Preprocessor:
                 a[0] = vals.TYPE_NAMES.index(a[0])
             except ValueError:
                 error("#macro arguments need to have a valid argument type - REG, MEM, CODE, ANY", "#" + cmd[0] + " " + ' '.join(cmd[1]))
-        print args
+        self.macros.append(macro.MacroVariation(name, args, cmd[2]))
 
 '''
-
 //Test macro for argument naming and passing conventions
+
 #macro test_macro! MEM location CODE exec VAL adder
     label MACROID0!;
         exec
