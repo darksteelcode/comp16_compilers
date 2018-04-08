@@ -4,7 +4,7 @@ REGister: A, B, RES, PC, ...
 MEMory address: a label name that is defined by a label cmd as a addr
 TYPE_VALue: A number. Decimal by default, 0x prefix makes hex, 0b prefix makes binary. Ending with a 'h or 'l specifies high or low byte for cmds like prb. 'l does nothing, 'h shifts the number left a byte
 '''
-
+MACROS = []
 CHAR_SPECIALS = ["\\", "\\'", "\\\"", "\\a", "\\b", "\\f", "\\n", "\\r", "\\t", "\\v"]
 CHAR_REPLACES = [47, 39, 34, 7, 8, 12, 10, 13, 9, 11]
 SEPARATORS = [' ', ';', '\t', '\n']

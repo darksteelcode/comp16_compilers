@@ -4,12 +4,16 @@ import token
 import compiler
 import pre_proc
 import macro
+import vals
+
+#Global list of macros is in vals
 
 def asmToCompilerRdyTokens(asm):
     asm, macros = pre_proc.Preprocessor(asm).applyInstr()
+    vals.MACROS += macros
     asm = clean.Clean(asm).clean()
     tokens = token.Tokenizer(asm).getCmds()
-    tokens = macro.applyMacrosToTokens(tokens, macros)
+    tokens = macro.applyMacrosToTokens(tokens, vals.MACROS)
     return tokens
 
 asmFile, outFile = args.getFiles()
