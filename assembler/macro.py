@@ -37,6 +37,9 @@ class MacroVariation:
         for a in self.args:
             argNames.append(a[1])
         argVals = args
+        for i in range(len(argVals)):
+            if argVals[i][0] == '{' and argVals[i][-1] == '}':
+                argVals[i] = argVals[i][1:-1]
         argIndex = 0
         for a in argNames:
             loc = body.find(a)
