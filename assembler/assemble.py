@@ -4,10 +4,15 @@ import token
 import compiler
 import pre_proc
 
+def asmToCompilerRdyAsm(asm):
+    asm, macros = pre_proc.Preprocessor(asm).applyInstr()
+    asm = clean.Clean(asm).clean()
+    #Apply macros here
+    return asm
+
 asmFile, outFile = args.getFiles()
 asm = asmFile.read()
-asm, macros = pre_proc.Preprocessor(asm).applyInstr()
-asm = clean.Clean(asm).clean()
+asm = asmToCompilerRdyAsm(asm)
 tokens = token.Tokenizer(asm).getCmds()
 c = compiler.Compiler(tokens, outFile)
 c.run()

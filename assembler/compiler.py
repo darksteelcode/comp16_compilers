@@ -4,7 +4,7 @@ Compiler does the following:
     1. create a command class for each cmd
     2. resolve mem variables to real addresses by asking each command if it defines a mem address, and based on each commands length
     3. lets each cmd emit its output to the binary file
-       (for complex commands like subroutines, this coud contain recursive code evaluation)
+       (for complex commands like subroutines, this could contain recursive code evaluation - this is not yet implemented, and may be moved to be evaluated a the same time as macros-which they effectivley are)
 
 ARGS:
 cmds is list of Cmd from token.py
