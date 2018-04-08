@@ -32,4 +32,11 @@ class MacroVariation:
 
     #Apply args to body
     def applyArgs(self, args):
-        pass
+        argNames = []
+        body = self.body
+        for a in self.args:
+            argNames.append(a[1])
+        argVals = args
+        for a in argNames:
+            index = 0
+            loc = self.body.find
