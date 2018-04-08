@@ -22,7 +22,7 @@ class Clean:
         return False
 
     def cleanWhitespace(self):
-        replaces = [["\n", ""], ["  ", " "], ["\t", "  "], ["{ ", "{"], ["( ", "("],
+        replaces = [["\n", ""], ["  ", " "], ["\t", ""], ["{ ", "{"], ["( ", "("],
                     [" }", "}"], [" )", ")"], ["; ", ";"], [" ;", ";"]]
         while(self.hasBadWhitespace()):
             for r in replaces:
