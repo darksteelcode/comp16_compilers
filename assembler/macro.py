@@ -55,6 +55,7 @@ class MacroVariation:
                 endIndex = loc + len(a)
                 if (loc == 0 or body[loc-1] in vals.SEPARATORS) and (endIndex >= len(body) or body[endIndex] in vals.SEPARATORS):
                     body = body[:loc] + argVals[argIndex] + body[endIndex:]
+                #Even with replacing of argNames, loc is still the place to begin searching to not get stuck in loops with args inside text
                 loc = body.find(a, loc + 1)
             argIndex += 1
         return body
