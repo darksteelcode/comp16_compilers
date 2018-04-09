@@ -15,14 +15,14 @@ class Clean:
         return self.asm
 
     def hasBadWhitespace(self):
-        white = ["\t", "  ", "\n", "{ ", "( ", " )", " }", "; ", " ;"]
+        white = ["\t", "  ", "\n", "{ ", "( ", " )", " }", "; ", " ;", "    "]
         for p in white:
             if self.asm.find(p) != -1:
                 return True
         return False
 
     def cleanWhitespace(self):
-        replaces = [["\n", ""], ["  ", " "], ["\t", ""], ["{ ", "{"], ["( ", "("],
+        replaces = [["    ", ""], ["\n", ""], ["  ", " "], ["\t", ""], ["{ ", "{"], ["( ", "("],
                     [" }", "}"], [" )", ")"], ["; ", ";"], [" ;", ";"]]
         while(self.hasBadWhitespace()):
             for r in replaces:
