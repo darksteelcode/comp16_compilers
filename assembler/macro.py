@@ -35,12 +35,16 @@ class Macro:
 
     def getVaryForArgs(self, args):
         for v in self.varies:
+            good = True
             if len(args) == len(v.args):
                 index = 0
                 for a in args:
                     if vals.getType(a) != v.args[index][0]:
-                        continue
+                       good = False
                     index+=1
+            else:
+                good = False
+            if good:
                 return v
         return False
 
