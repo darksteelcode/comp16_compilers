@@ -40,7 +40,9 @@ class Macro:
                 index = 0
                 for a in args:
                     if vals.getType(a) != v.args[index][0]:
-                       good = False
+                        #Don't allow ANY when code is passed
+                        if v.args[index][0] != vals.TYPE_ANY or vals.getType(a) == vals.TYPE_CODE:
+                            good = False
                     index+=1
             else:
                 good = False
