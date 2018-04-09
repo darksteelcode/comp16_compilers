@@ -49,7 +49,11 @@ class Macro:
         return False
 
     def applyArgs(self, args):
-        return self.getVaryForArgs(args).applyArgs(args)
+        vary = self.getVaryForArgs(args)
+        if vary:
+            return vary.applyArgs(args)
+        else:
+            error("No acceptable macro variation found for macro " + str(self.name) + " with arguments " + " ".join(args), "#macro " + self.name)
 
 class MacroVariation:
     def __init__(self, name, args, body):
