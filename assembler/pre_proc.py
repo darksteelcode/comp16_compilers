@@ -151,9 +151,15 @@ class Preprocessor:
         self.asm = self.asm[:cmd[3]] + cmd[2]*num + self.asm[cmd[3]:]
 
     def string(self, cmd):
+        name = False
         if len(cmd[1]) != 0:
-            error("#string takes 0 arguments, not " + str(len(cmd[1])) + "-String should be in body of #string", "#" + cmd[0] + " " + ' '.join(cmd[1]))
+            if len(cmd[1]) == 1:
+                name = cmd[1][0]
+            else:
+                error("#string takes 0 arguments, not " + str(len(cmd[1])) + "-String should be in body of #string", "#" + cmd[0] + " " + ' '.join(cmd[1]))
         result = ""
+        if name:
+            result += "label " + name + ";\n"
         cmd[2] = cmd[2][1:]
         for c in cmd[2]:
             if not ord(c) in vals.CHAR_REPLACES:
@@ -179,19 +185,3 @@ class Preprocessor:
             except ValueError:
                 error("#macro arguments need to have a valid argument type - REG, MEM, CODE, ANY", "#" + cmd[0] + " " + ' '.join(cmd[1]))
         self.macros.append(macro.MacroVariation(name, args, cmd[2]))
-
-'''
-//Test macro for argument naming and passing conventions
-
-#macro test_macro! MEM location CODE exec VAL adder
-    label MACROID0!;
-        exec
-        put CR adder;
-        str CR location;
-        mov CR CND;
-        jumpc MACROID0!;
-    label MACROID1!;
-        jump MACROID1!;
-\
-
-'''
