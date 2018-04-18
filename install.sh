@@ -1,6 +1,8 @@
 #!/bin/bash
 chmod +x assembler/c16asm.py
-ln -sf `pwd`/assembler/c16asm.py /usr/bin/c16asm
+ln -sf `pwd`/assembler/c16asm.py /usr/local/bin/c16asm
 chmod +x transmit/c16send.py
-ln -sf `pwd`/transmit/c16send.py /usr/bin/c16send
-sudo mkdir /usr/c16-include
+ln -sf `pwd`/transmit/c16send.py /usr/local/bin/c16send
+chmod +x binToMif/c16binToMif
+ln -sf `pwd`/binToMif/c16binToMif.py /usr/local/bin/c16binToMif
+mkdir -p /usr/c16-include
