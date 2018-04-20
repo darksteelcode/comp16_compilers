@@ -152,18 +152,22 @@ class Preprocessor:
 
     def string(self, cmd):
         name = False
+        col = 0
         if len(cmd[1]) != 0:
             if len(cmd[1]) == 1:
                 name = cmd[1][0]
+            elif len(cmd[1]) == 2:
+                name = cmd[1][0]
+                col = vals.valToNum(cmd[1][1]) << 8
             else:
-                error("#string takes 0 arguments, not " + str(len(cmd[1])) + "-String should be in body of #string", "#" + cmd[0] + " " + ' '.join(cmd[1]))
+                error("#string takes 0 to 2 arguments, not " + str(len(cmd[1])) + "-String should be in body of #string", "#" + cmd[0] + " " + ' '.join(cmd[1]))
         result = ""
         if name:
             result += "label " + name + ";\n"
         cmd[2] = cmd[2][1:]
         for c in cmd[2]:
             if not ord(c) in vals.CHAR_REPLACES:
-                result += ". '" + c + "';\n"
+                result += ". " + str(ord(c)+col) + ";\n"
         result += ". 0;\n"
         self.asm = self.asm[:cmd[3]] + result + self.asm[cmd[3]:]
 
