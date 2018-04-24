@@ -10,6 +10,8 @@ class Cmd:
         self.groupStarts = ['{', '(', "'"]
         self.groupEnds = ['}', '(', "'"]
         self.genArgs()
+    def __str__(self):
+        return self.toAsm()
     #Add function to convert asm
     def genArgs(self):
         startI = 0

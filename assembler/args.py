@@ -5,10 +5,8 @@ from util import *
 parser = argparse.ArgumentParser(usage="\n--------------------\n- Comp16 Assembler -\nUsage:\npython assemble.py [options] <asm file>\nOptions:\n-o output file  (default: asm.bin)\n-h, --help display   help\n--------------------")
 parser.add_argument("-o", nargs=1)
 parser.add_argument("asm_file")
-args = []
+args = parser.parse_args()
 
-def genArgs():
-    parser.parse_args()
 
 def print_usage():
     print "usage:\n--------------------\n- Comp16 Assembler -\nUsage:\npython assemble.py [options] <asm file>\nOptions:\n-o output file  (default: asm.bin)\n-h, --help   display help\n--------------------"

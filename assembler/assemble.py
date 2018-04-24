@@ -1,5 +1,5 @@
 import sys
-import args, clean
+import clean
 import token
 import compiler
 import pre_proc
@@ -20,8 +20,8 @@ def asmToCompilerRdyTokens(asm):
     tokens = macro.applyMacrosToTokens(tokens, vals.MACROS)
     return tokens
 
-if  __name__ == "__main__":
-    args.genArgs()
+def run_c16asm():
+    import args
     asmFile, outFile = args.getFiles()
     asm = asmFile.read()
     tokens = asmToCompilerRdyTokens(asm)
