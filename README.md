@@ -158,3 +158,5 @@ Example:
 prb CR 0xf3'h; //Set the CR high byte equal to 0xf3. The 'h just specifies that this is the high byte being operated on.
 jmp CR 0xa1; //Set the CR low byte equal to 0xa1, and move it to the PC, which will cause a jump once this instruction completes.
 ```
+### 3:jpc reg(4) addrs(8); Jump COnditional
+jpc is the same as jmp, but only performs a jump if CND is a non zero value.
