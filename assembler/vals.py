@@ -18,8 +18,9 @@ TYPE_NAMES = ["REG", "MEM", "VAL", "CODE", "ANY"]
 
 REGS = ["A", "B", "RES", "PC", "MAR", "MDR", "CND", "BP", "SP", "CR", "AX", "BX", "CX", "DX", "EX", "FX"]
 
+# $denotes a variable on the stack
 def getType(val):
-    if val in REGS or val[0] == '(' and val[-1] == ')':
+    if val in REGS or val[0] == '$':
         return TYPE_REG
     if val[0] == '{' and val[-1] == '}':
         return TYPE_CODE

@@ -65,7 +65,6 @@ Call stack and functon entry and exit
 
 Arg 1    <- SP location on entry to function called in function, and during execution
 -----
-Local 3
 Local 2
 Local 1  <- SP location on entry to function and exit
 Return Addrs
@@ -73,6 +72,22 @@ Arg 3
 Arg 2
 Arg 1    <- SP location after exit from function
 --------
+
+Function Entry and Exit (n is number of arguments, l is number of locals on stack)
+Entry
+mov SP A OP_-;
+prb B l;
+pra B l;
+mov RES SP;
+
+Exit
+mov SP A OP_+;
+prb B l;
+pra B l;
+mov RES SP;
+ret n;
+
+
 '''
 
 #Defines func command, and takes care of local command
@@ -87,9 +102,9 @@ class func(MacroCmdBase):
             error("the first argument to func has to be a function name (memory location)", self.asm)
         elif self.types[-1] != vals.TYPE_CODE:
             error("the last argument to func has to be code", self.ams)
-        for t in self.types[1:-1]:
-            if t != vals.TYPE_MEM:
-                error("func's arguments can't be code, values, or registers", self.asm)
+        for t in self.args[1:-1]:
+            if t[0] != "$":
+                error("func arguments must be prefixed with an $ (they go on the stack", self.asm)
         return True
 
     def getResult(self):
@@ -106,17 +121,40 @@ class func(MacroCmdBase):
             if c.cmd == "local":
                 if len(c.args) != 1:
                     error("local takes only one argument", c.toAsm())
-                elif c.types[0] != vals.TYPE_MEM:
-                    error("local's argment has to be a local var name (memory location)", c.toAsm())
+                elif c.args[0][0] != "$":
+                    error("all variables on the stack need to start with an $", c.toAsm())
                 local.append(c.args[0])
         #Remove all local commands from code
+        code = [t for t in code if (t.cmd != "local")]
+        #Count number of element needed on stack in preparation for function entry and exit code
         numArgs = len(args)
         numLocals = len(local)
-        
+        #Generate Function entry and exit code
+        entryCode = "mov SP A 1;prb B " + str(numLocals) + ";pra B " + str(numLocals) + ";mov RES SP;"
+        exitCode = "mov SP A 0;prb B " + str(numLocals) + ";pra B " + str(numLocals) + ";mov RES SP;ret " + str(numArgs) + ";"
+        entryCode = assemble.asmToTokens(entryCode)
+        exitCode = assemble.asmToTokens(exitCode)
+        #final set of tokens to return
+        tokens = []
+        tokens += entryCode
+        #generate array with variables on stack with the format: [[name, num_to_sub_from_SP], ...]
+        stack_vars = []
+        index_add = 1
+        for l in reversed(local):
+            stack_vars.append([l, index_add])
+            index_add += 1
+        stack_vars.append(["FUNC_RETURN_ADDRS", index_add])
+        index_add += 1
+        for a in reversed(args):
+            stack_vars.append([a, index_add])
+            index_add += 1
+        print stack_vars
+        #Replace each stack argument in the code with code to load its address in MAR, and replace the reference to the argument to MDR
 
 
 
 
-a = func(["func_name", "arg1", "arg2", "{local loc1;prb A arg1;mov loc1 A;local loc2;mov loc2 AX;}"])
+
+a = func(["func_name", "$arg1", "$arg2", "$arg3", "{local $loc1;prb A $arg1;pra B AX;mov $loc1 A;local $loc2;mov $loc2 AX;}"])
 a.checkArgs()
 a.getResult()
