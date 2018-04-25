@@ -130,8 +130,9 @@ class func(MacroCmdBase):
         numArgs = len(args)
         numLocals = len(local)
         #Generate Function entry and exit code
-        entryCode = "mov SP A 1;prb B " + str(numLocals) + ";pra B " + str(numLocals) + ";mov RES SP;"
+        entryCode = "label " + name + ";mov SP A 1;prb B " + str(numLocals) + ";pra B " + str(numLocals) + ";mov RES SP 1;"
         exitCode = "mov SP A 0;prb B " + str(numLocals) + ";pra B " + str(numLocals) + ";mov RES SP;ret " + str(numArgs) + ";"
+        print exitCode
         entryCode = assemble.asmToTokens(entryCode)
         exitCode = assemble.asmToTokens(exitCode)
         #generate array with variables on stack with names in stack_vars and offsets in stack_locs
@@ -235,7 +236,9 @@ def applyMacroCmds(tokens):
         is_macro = False
         for n, m in zip(names, macros):
             if t.cmd == n:
-                result += m(t.args)
+                macro_apply = m(t.args)
+                macro_apply.checkArgs()
+                result += macro_apply.getResult()
                 is_macro = True
         if not is_macro:
             result.append(t)
