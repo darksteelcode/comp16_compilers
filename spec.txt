@@ -27,8 +27,10 @@ c: out | 4:op 4:reg 8:port
   OUTput - set port equal to reg
 d: in  | 4:op 4:reg 8:port
   INput - set reg equal to value at port
-e: stk | 4:OP 4:REG 8:offset
-  STacK - load the value at *(SP+offset) into reg
+e: skl | 4:op 4:reg 8:offset
+  StacK Load - load the value at *(SP+offset) into reg
+f: sks | 4:op 4:reg 8:offset
+  StacK Store - store value in reg to *(SP+offset)
 
 Registers
 num:abbreviation:name

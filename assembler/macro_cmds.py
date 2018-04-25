@@ -149,8 +149,30 @@ class func(MacroCmdBase):
             stack_vars.append([a, index_add])
             index_add += 1
         print stack_vars
-        #Replace each stack argument in the code with code to load its address in MAR, and replace the reference to the argument to MDR
+        #Replace each stack argument in the code with code to load its address in MAR (skl sks), and appropriatley replace the argument
+        #Replace cases to deal with (* marks an automatic case - if command reads, do skl BP before, if write, do sks BP after):
+        ''''
+        mov reg $var - sks reg $var;
+        mov $var reg - skl reg $var;
+        mov $var1 $var2 - skl BP $var1;sks BP $var2;
 
+        jmp $var loc - skl BP $var;jmp BP loc;*
+        jpc $var loc - skl BP $var;jpc BP loc;*
+
+        pra $var val - skl BP $var;pra BP val;sks BP $var;
+        prb $var val - skl BP $var;prb BP val;sks BP $var;
+
+        lod $var loc - lod BP loc;sks BP $var;*
+        str $var loc - skl BP $var;str BP loc;*
+
+        psh $var - skl BP $var;psh BP;*
+        pop $var - pop BP;sks BP $var;*
+
+        srt $var loc - skl BP $var;srt BP loc;*
+
+        out $var port - skl BP $var;out BP port;*
+        in $var port - in BP port;sks BP $var;*
+        ''''
 
 
 
