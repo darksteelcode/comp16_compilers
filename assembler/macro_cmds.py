@@ -179,42 +179,66 @@ class func(MacroCmdBase):
         tokens = []
         tokens += entryCode
         for c in code:
-                if c.cmd == "mov" and len(c.args) >= 2:
-                    if c.args[0] in stack_vars and c.args[1] in stack_vars:
-                        tokens += assemble.asmToTokens("skl BP " + str(stack_locs[stack_vars.index(c.args[0])]) + ";")
-                        if len(c.args) == 3:
-                            tokens += assemble.asmToTokens("mov BP BP " + c.args[2] + ";")
-                        else:
-                            tokens += assemble.asmToTokens("mov BP BP 0;")
-                        tokens += assemble.asmToTokens("sks BP " + str(stack_locs[stack_vars.index(c.args[1])]) + ";")
-                    elif c.args[0] in stack_vars:
-                        tokens += assemble.asmToTokens("skl BP " + str(stack_locs[stack_vars.index(c.args[0])]) + ";")
-                        if len(c.args) == 3:
-                            tokens += assemble.asmToTokens("mov BP " + c.args[1] +" " + c.args[2] + ";")
-                        else:
-                            tokens += assemble.asmToTokens("mov BP " + c.args[1] + " 0;")
-                    elif c.args[1] in stack_vars:
-                        if len(c.args) == 3:
-                            tokens += assemble.asmToTokens("mov " + c.args[0] + " BP " + c.args[2] + ";")
-                        else:
-                            tokens += assemble.asmToTokens("mov " + c.args[0] + " BP 0;")
-                        tokens += assemble.asmToTokens("sks BP " + str(stack_locs[stack_vars.index(c.args[1])]) + ";")
-                else:
-                    has_stack_var = False
-                    stack_var_index = -1
-                    arg_index = 0
-                    for a in c.args:
-                        if a in stack_vars:
-                            stack_var_index = stack_vars.index(a)
-                            has_stack_var = True
-                            break
-                        arg_index += 1
-                    if has_stack_var:
-                        c.args[arg_index] = "BP"
-                        if c.cmd in reads:
-                            tokens += assemble.asmToTokens("skl BP " + str(stack_locs[stack_var_index]) + ";")
-                        tokens.append(c)
-                        if c.cmd in writes:
-                            tokens += assemble.asmToTokens("sks BP " + str(stack_locs[stack_var_index]) + ";")
+            added_cmd = False
+            if c.cmd == "mov" and len(c.args) >= 2:
+                if c.args[0] in stack_vars and c.args[1] in stack_vars:
+                    tokens += assemble.asmToTokens("skl BP " + str(stack_locs[stack_vars.index(c.args[0])]) + ";")
+                    if len(c.args) == 3:
+                        tokens += assemble.asmToTokens("mov BP BP " + c.args[2] + ";")
+                    else:
+                        tokens += assemble.asmToTokens("mov BP BP 0;")
+                    tokens += assemble.asmToTokens("sks BP " + str(stack_locs[stack_vars.index(c.args[1])]) + ";")
+                    added_cmd = True
+                elif c.args[0] in stack_vars:
+                    tokens += assemble.asmToTokens("skl BP " + str(stack_locs[stack_vars.index(c.args[0])]) + ";")
+                    if len(c.args) == 3:
+                        tokens += assemble.asmToTokens("mov BP " + c.args[1] +" " + c.args[2] + ";")
+                    else:
+                        tokens += assemble.asmToTokens("mov BP " + c.args[1] + " 0;")
+                    added_cmd = True
+                elif c.args[1] in stack_vars:
+                    if len(c.args) == 3:
+                        tokens += assemble.asmToTokens("mov " + c.args[0] + " BP " + c.args[2] + ";")
+                    else:
+                        tokens += assemble.asmToTokens("mov " + c.args[0] + " BP 0;")
+                    tokens += assemble.asmToTokens("sks BP " + str(stack_locs[stack_vars.index(c.args[1])]) + ";")
+                    added_cmd = True
+            else:
+                has_stack_var = False
+                stack_var_index = -1
+                arg_index = 0
+                for a in c.args:
+                    if a in stack_vars:
+                        stack_var_index = stack_vars.index(a)
+                        has_stack_var = True
+                        break
+                    arg_index += 1
+                if has_stack_var:
+                    c.args[arg_index] = "BP"
+                    if c.cmd in reads:
+                        tokens += assemble.asmToTokens("skl BP " + str(stack_locs[stack_var_index]) + ";")
+                    tokens.append(c)
+                    if c.cmd in writes:
+                        tokens += assemble.asmToTokens("sks BP " + str(stack_locs[stack_var_index]) + ";")
+                    added_cmd = True
+            if not added_cmd:
+                tokens.append(c)
         tokens += exitCode
         return tokens
+
+names = ["call", "func"]
+macros = [call, func]
+
+def applyMacroCmds(tokens):
+    result = []
+    for t in tokens:
+        is_macro = False
+        for n, m in zip(names, macros):
+            if t.cmd == n:
+                result += m(t.args)
+                is_macro = True
+        if not is_macro:
+            result.append(t)
+    return result
+
+

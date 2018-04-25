@@ -1,10 +1,5 @@
-import sys
-import clean
-import token
-import compiler
-import pre_proc
-import macro
-import vals
+import sys, clean, token, compiler, pre_proc, macro, vals, macro_cmds
+
 
 #Global list of macros is in vals
 
@@ -18,6 +13,7 @@ def asmToTokens(asm):
 def asmToCompilerRdyTokens(asm):
     tokens = asmToTokens(asm)
     tokens = macro.applyMacrosToTokens(tokens, vals.MACROS)
+    tokens = macro_cmds.applyMacroCmds(tokens)
     return tokens
 
 def run_c16asm():
