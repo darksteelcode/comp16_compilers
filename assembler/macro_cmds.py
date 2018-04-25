@@ -56,7 +56,7 @@ class call(MacroCmdBase):
                 asm += "prb MAR " + a + ";lod CR " + a + ";psh CR;"
             else:
                 error("call only takes REG, VAL, or MEM as arguments to function", self.asm)
-        asm += "srt " + cmd + ";"
+        asm += "prb CR " + cmd + ";srt CR " + cmd + ";"
         return assemble.asmToTokens(asm)
 
 '''
@@ -134,27 +134,27 @@ class func(MacroCmdBase):
         exitCode = "mov SP A 0;prb B " + str(numLocals) + ";pra B " + str(numLocals) + ";mov RES SP;ret " + str(numArgs) + ";"
         entryCode = assemble.asmToTokens(entryCode)
         exitCode = assemble.asmToTokens(exitCode)
-        #final set of tokens to return
-        tokens = []
-        tokens += entryCode
-        #generate array with variables on stack with the format: [[name, num_to_sub_from_SP], ...]
+        #generate array with variables on stack with names in stack_vars and offsets in stack_locs
         stack_vars = []
+        stack_locs = []
         index_add = 1
         for l in reversed(local):
-            stack_vars.append([l, index_add])
+            stack_vars.append(l)
+            stack_locs.append(index_add)
             index_add += 1
-        stack_vars.append(["FUNC_RETURN_ADDRS", index_add])
+        stack_vars.append("$FUNC_RETURN_ADDRS")
+        stack_locs.append(index_add)
         index_add += 1
         for a in reversed(args):
-            stack_vars.append([a, index_add])
+            stack_vars.append(a)
+            stack_locs.append(index_add)
             index_add += 1
-        print stack_vars
         #Replace each stack argument in the code with code to load its address in MAR (skl sks), and appropriatley replace the argument
         #Replace cases to deal with (* marks an automatic case - if command reads, do skl BP before, if write, do sks BP after):
         ''''
-        mov reg $var - sks reg $var;
-        mov $var reg - skl reg $var;
-        mov $var1 $var2 - skl BP $var1;sks BP $var2;
+        mov reg $var op - mov reg BP op;sks BP $var;*
+        mov $var reg op- skl BP $var;mov BP reg op;
+        mov $var1 $var2 op- skl BP $var1;mov BP BP op;sks BP $var2;
 
         jmp $var loc - skl BP $var;jmp BP loc;*
         jpc $var loc - skl BP $var;jpc BP loc;*
@@ -172,11 +172,49 @@ class func(MacroCmdBase):
 
         out $var port - skl BP $var;out BP port;*
         in $var port - in BP port;sks BP $var;*
-        ''''
-
-
-
-
-a = func(["func_name", "$arg1", "$arg2", "$arg3", "{local $loc1;prb A $arg1;pra B AX;mov $loc1 A;local $loc2;mov $loc2 AX;}"])
-a.checkArgs()
-a.getResult()
+        '''
+        reads = ["jmp", "jpc", "str", "psh", "srt", "out", "pra", "prb"]
+        writes = ["lod", "pop", "in", "pra", "prb"]
+        #final set of tokens to return
+        tokens = []
+        tokens += entryCode
+        for c in code:
+                if c.cmd == "mov" and len(c.args) >= 2:
+                    if c.args[0] in stack_vars and c.args[1] in stack_vars:
+                        tokens += assemble.asmToTokens("skl BP " + str(stack_locs[stack_vars.index(c.args[0])]) + ";")
+                        if len(c.args) == 3:
+                            tokens += assemble.asmToTokens("mov BP BP " + c.args[2] + ";")
+                        else:
+                            tokens += assemble.asmToTokens("mov BP BP 0;")
+                        tokens += assemble.asmToTokens("sks BP " + str(stack_locs[stack_vars.index(c.args[1])]) + ";")
+                    elif c.args[0] in stack_vars:
+                        tokens += assemble.asmToTokens("skl BP " + str(stack_locs[stack_vars.index(c.args[0])]) + ";")
+                        if len(c.args) == 3:
+                            tokens += assemble.asmToTokens("mov BP " + c.args[1] +" " + c.args[2] + ";")
+                        else:
+                            tokens += assemble.asmToTokens("mov BP " + c.args[1] + " 0;")
+                    elif c.args[1] in stack_vars:
+                        if len(c.args) == 3:
+                            tokens += assemble.asmToTokens("mov " + c.args[0] + " BP " + c.args[2] + ";")
+                        else:
+                            tokens += assemble.asmToTokens("mov " + c.args[0] + " BP 0;")
+                        tokens += assemble.asmToTokens("sks BP " + str(stack_locs[stack_vars.index(c.args[1])]) + ";")
+                else:
+                    has_stack_var = False
+                    stack_var_index = -1
+                    arg_index = 0
+                    for a in c.args:
+                        if a in stack_vars:
+                            stack_var_index = stack_vars.index(a)
+                            has_stack_var = True
+                            break
+                        arg_index += 1
+                    if has_stack_var:
+                        c.args[arg_index] = "BP"
+                        if c.cmd in reads:
+                            tokens += assemble.asmToTokens("skl BP " + str(stack_locs[stack_var_index]) + ";")
+                        tokens.append(c)
+                        if c.cmd in writes:
+                            tokens += assemble.asmToTokens("sks BP " + str(stack_locs[stack_var_index]) + ";")
+        tokens += exitCode
+        return tokens

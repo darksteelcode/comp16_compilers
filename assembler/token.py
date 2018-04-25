@@ -32,7 +32,12 @@ class Cmd:
         for i in self.args:
             self.types.append(vals.getType(i))
     def toAsm(self):
-        return self.asm + ";"
+        self.asm = ""
+        self.asm += self.cmd;
+        for a in self.args:
+            self.asm += " " + a
+        self.asm += ";"
+        return self.asm
 
 
 #Gets CLEAN asm WITHOUT MACRO DEFINITIONS
