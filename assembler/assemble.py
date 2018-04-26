@@ -21,8 +21,6 @@ def run_c16asm():
     asmFile, outFile = args.getFiles()
     asm = asmFile.read()
     tokens = asmToCompilerRdyTokens(asm)
-    for t in tokens:
-        print t
     c = compiler.Compiler(tokens, outFile)
     c.run()
     print "Comp16 Assembler Finished Succesfully"

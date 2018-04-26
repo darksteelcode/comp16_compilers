@@ -178,6 +178,7 @@ class func(MacroCmdBase):
         #final set of tokens to return
         tokens = []
         tokens += entryCode
+        #If a value is pushed or poped from the stack, each stack vars stack_loc has to be shifted in the right direction
         for c in code:
             added_cmd = False
             if c.cmd == "mov" and len(c.args) >= 2:
@@ -221,6 +222,13 @@ class func(MacroCmdBase):
                     if c.cmd in writes:
                         tokens += assemble.asmToTokens("sks BP " + str(stack_locs[stack_var_index]) + ";")
                     added_cmd = True
+            if c.cmd == "psh":
+                for l in range(len(stack_locs)):
+                    stack_locs[l]+=1
+            elif c.cmd == "pop":
+                for l in range(len(stack_locs)):
+                    stack_locs[l]-=1
+
             if not added_cmd:
                 tokens.append(c)
         tokens += exitCode
