@@ -103,7 +103,7 @@ class func(MacroCmdBase):
         elif self.types[0] != vals.TYPE_MEM:
             error("the first argument to func has to be a function name (memory location)", self.asm)
         elif self.types[-1] != vals.TYPE_CODE:
-            error("the last argument to func has to be code", self.ams)
+            error("the last argument to func has to be code", self.asm)
         for t in self.args[1:-1]:
             if t[0] != "$":
                 error("func arguments must be prefixed with an $ (they go on the stack", self.asm)
