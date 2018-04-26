@@ -132,7 +132,6 @@ class func(MacroCmdBase):
         #Generate Function entry and exit code
         entryCode = "label " + name + ";mov SP A 1;prb B " + str(numLocals) + ";pra B " + str(numLocals) + ";mov RES SP 1;"
         exitCode = "mov SP A 0;prb B " + str(numLocals) + ";pra B " + str(numLocals) + ";mov RES SP;ret " + str(numArgs) + ";"
-        print exitCode
         entryCode = assemble.asmToTokens(entryCode)
         exitCode = assemble.asmToTokens(exitCode)
         #generate array with variables on stack with names in stack_vars and offsets in stack_locs
