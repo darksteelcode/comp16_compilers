@@ -166,8 +166,7 @@ class Preprocessor:
             result += "label " + name + ";\n"
         cmd[2] = cmd[2][1:]
         for c in cmd[2]:
-            if not ord(c) in vals.CHAR_REPLACES:
-                result += ". " + str(ord(c)+col) + ";\n"
+            result += ". " + str(ord(c)+col) + ";\n"
         result += ". 0;\n"
         self.asm = self.asm[:cmd[3]] + result + self.asm[cmd[3]:]
 
