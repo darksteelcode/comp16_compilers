@@ -38,7 +38,7 @@ class Compiler:
             try:
                 classI = CMD_NAMES.index(t.cmd)
             except ValueError:
-                error("Command " + t.cmd + " is not defined", t.toAsm())
+                error("Command " + t.cmd + " is not defined. Did you forget to #include the file it is in?", t.toAsm())
             self.cmds.append(CMD_CLASSES[classI](t, self.out));
             self.cmds[-1].assignCompiler(self)
 
