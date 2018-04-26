@@ -48,7 +48,9 @@ class call(MacroCmdBase):
         self.types = self.types[1:]
         asm = ""
         for a, t in zip(self.args, self.types):
-            if t == vals.TYPE_REG:
+            if a[0] == "&":
+                asm += "prb CR " + a[1:] + ";pra CR " + a[1:] + ";psh CR;"
+            elif t == vals.TYPE_REG:
                 asm += "psh " + a + ";"
             elif t == vals.TYPE_VAL:
                 asm += "prb CR " + a + ";pra CR " + a + ";psh CR;"
