@@ -179,6 +179,7 @@ class func(MacroCmdBase):
         tokens = []
         tokens += entryCode
         #If a value is pushed or poped from the stack, each stack vars stack_loc has to be shifted in the right direction
+        SP_offset = 0
         for c in code:
             added_cmd = False
             if c.cmd == "mov" and len(c.args) >= 2:
@@ -225,10 +226,16 @@ class func(MacroCmdBase):
             if c.cmd == "psh":
                 for l in range(len(stack_locs)):
                     stack_locs[l]+=1
+                SP_offset += 1
             elif c.cmd == "pop":
                 for l in range(len(stack_locs)):
                     stack_locs[l]-=1
-
+                SP_offset -= 1
+            #srt is assumed to fix any offsets to stack, as they are assumed to be for subroutinue call
+            elif c.cmd == "srt":
+                for l in range(len(stack_locs)):
+                    stack_locs[l] -= SP_offset
+                SP_offset = 0
             if not added_cmd:
                 tokens.append(c)
         tokens += exitCode
