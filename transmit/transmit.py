@@ -51,7 +51,7 @@ else:
 def sendBin(bin_data):
     for d in bin_data:
             ser.write(d)
-            time.sleep(0.0002)
+            time.sleep(0.001)
     return bin_data
 
 def confirmBin(bin_to_confirm):
@@ -99,7 +99,7 @@ while cur < 80:
     sys.stdout.write("#")
     sys.stdout.flush()
 
-sendBin(chr(255)+chr(255))
+sendBin(chr(15)+chr(15))
 print
 ser.close()
 
