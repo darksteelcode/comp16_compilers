@@ -24,7 +24,7 @@ def run_c16asm():
     c = compiler.Compiler(tokens, outFile)
     c.run()
     print "Comp16 Assembler Finished Succesfully"
-    print str(outFile.tell()) + " bytes written"
+    print str(outFile.tell()) + " bytes written, " + str(outFile.tell()/2) + " instructions"
     if outFile.tell() == 0:
         print "Are you sure the file contains proper comp16 asm code?"
     outFile.close()
