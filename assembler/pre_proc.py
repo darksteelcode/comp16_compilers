@@ -137,7 +137,11 @@ class Preprocessor:
                 error("No such file: " + path, "#" + cmd[0] + " " + ' '.join(cmd[1]))
 
         if not path in self.included:
-            self.asm = self.asm[:cmd[3]] + f.read() + self.asm[cmd[3]:]
+            data = f.read()
+            if "!INCLUDE_PLACE_AT_END" in data:
+                self.asm += data
+            else:
+                self.asm = self.asm[:cmd[3]] + data + self.asm[cmd[3]:]
             self.included.append(path)
         f.close()
 
