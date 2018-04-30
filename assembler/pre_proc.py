@@ -2,7 +2,7 @@ from util import *
 import vals
 import macro
 #Preprocessor
-#NOTE - include looks in /usr/c16_include for asm files after current dir
+#NOTE - include looks in /usr/local/c16_include for asm files after current dir
 '''
 Format
 The begining of a preprocessor statment is marked by a #, and the end by a \
@@ -132,7 +132,7 @@ class Preprocessor:
             f = open(path)
         except IOError:
      	    try:
-           	    f = open("/usr/c16_include/" + path)
+           	    f = open("/usr/local/c16_include/" + path)
             except IOError:
                 error("No such file: " + path, "#" + cmd[0] + " " + ' '.join(cmd[1]))
 
