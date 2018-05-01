@@ -31,10 +31,10 @@ class Preprocessor:
     def __init__(self, asm):
     	self.asm = asm
     	#valid cmds in order to apply them - MACRO must come after defne and before the rest, else it's body will be preproc'd without arguments
-    	self.valid = ["include", "define", "macro", "repeat", "string"]
+    	self.valid = ["include", "define", "macro", "repeat", "string", "ifdef", "ifnotdef"]
     	#Already included files - don't include again
     	self.included = []
-    	self.runs =  [self.include, self.define, self.macro, self.repeat, self.string]
+    	self.runs =  [self.include, self.define, self.macro, self.repeat, self.string, self.ifdef, self.ifnotdef]
     	self.instrs = [] #Instrs in string form
     	self.cmds = [] #Tokenized
     	#Valid seperators for command names
@@ -111,6 +111,7 @@ class Preprocessor:
             error("#define takes 2 arguments, not " + str(len(cmd[1])), "#" + cmd[0] + " " + ' '.join(cmd[1]))
         old = cmd[1][0]
         new = cmd[1][1]
+        vals.DEFINES.append(old)
         index = self.asm.find(old)
         while index != -1:
             endIndex = len(self.asm) + 1
@@ -192,3 +193,15 @@ class Preprocessor:
             except ValueError:
                 error("#macro arguments need to have a valid argument type - REG, MEM, CODE, ANY", "#" + cmd[0] + " " + ' '.join(cmd[1]))
         self.macros.append(macro.MacroVariation(name, args, cmd[2]))
+
+    def ifdef(self, cmd):
+        if len(cmd[1]) < 1:
+            error("#ifdef takes at least one argument - !VAR_NAME", "#" + cmd[0] + " " + ' '.join(cmd[1]))
+        if cmd[1][0][1:] in vals.DEFINES:
+            self.asm = self.asm[:cmd[3]] + cmd[2] + self.asm[cmd[3]:]
+
+    def ifnotdef(self, cmd):
+        if len(cmd[1]) < 1:
+            error("#ifnotdef takes at least one argument - !VAR_NAME", "#" + cmd[0] + " " + ' '.join(cmd[1]))
+        if not cmd[1][0][1:] in vals.DEFINES:
+            self.asm = self.asm[:cmd[3]] + cmd[2] + self.asm[cmd[3]:]
