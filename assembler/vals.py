@@ -8,6 +8,7 @@ MACROS = []
 CHAR_SPECIALS = ["\\", "\\'", "\\\"", "\\a", "\\b", "\\f", "\\n", "\\r", "\\t", "\\v"]
 CHAR_REPLACES = [47, 39, 34, 7, 8, 12, 10, 13, 9, 11]
 SEPARATORS = [' ', ';', '\t', '\n']
+MACRO_NAME_SEPERATORS = [' ', ';', '\t', '\n', '&']
 TYPE_REG = 0
 TYPE_MEM = 1
 TYPE_VAL = 2
