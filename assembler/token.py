@@ -7,8 +7,8 @@ class Cmd:
         self.cmd = ""
         self.args = []
         self.types = []
-        self.groupStarts = ['{', '(', "'"]
-        self.groupEnds = ['}', '(', "'"]
+        self.groupStarts = ['{', '(']
+        self.groupEnds = ['}', ')']
         self.genArgs()
     def __str__(self):
         return self.toAsm()
@@ -23,7 +23,7 @@ class Cmd:
                 groupDepth -= 1
                 if groupDepth < 0:
                     error("To many closing symbols", self.asm[startI:i+5])
-            if self.asm[i] == ' ' and groupDepth == 0:
+            if self.asm[i] == ' ' and groupDepth == 0 and self.asm[i-1] != "'":
                 self.args.append(self.asm[startI:i])
                 startI = i+1
         self.args.append(self.asm[startI:])
@@ -47,7 +47,7 @@ class Tokenizer:
         self.tokens = []
         self.cmds = []
         self.groupStarts = ['{', '(']
-        self.groupEnds = ['}', '(']
+        self.groupEnds = ['}', ')']
     #Splits asm into cmds, doesnt split cmd args
     def getCmds(self):
         startI = 0
